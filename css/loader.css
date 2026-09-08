@@ -1,0 +1,154 @@
+/* ============================================================
+   PANTALLA DE CARGA — Matrix de corazones + contador a 21
+   ============================================================ */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity .9s var(--ease), transform .9s var(--ease);
+  user-select: none;
+}
+
+#loading-screen.wipe {
+  opacity: 0;
+  transform: scale(1.06);
+  pointer-events: none;
+}
+
+#matrix-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.loading-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .9rem;
+  text-align: center;
+  padding: 0 1.5rem;
+}
+
+.loading-number {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(4.5rem, 22vw, 9rem);
+  line-height: 1;
+  color: #fff;
+  text-shadow: 0 0 28px rgba(var(--pink-rgb), .55), 0 0 60px rgba(var(--pink-rgb), .25);
+  font-variant-numeric: tabular-nums;
+  min-width: 3ch;
+  transition: transform .3s var(--ease), text-shadow .3s var(--ease);
+}
+
+.loading-number.pulse {
+  animation: numberPulse .5s var(--ease);
+}
+
+.loading-number.ready {
+  cursor: pointer;
+}
+
+.loading-number.ready:hover {
+  transform: scale(1.08);
+  text-shadow: 0 0 40px rgba(var(--pink-rgb), .9), 0 0 70px rgba(var(--gold-rgb), .6);
+}
+
+@keyframes numberPulse {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.14); text-shadow: 0 0 50px rgba(var(--gold-rgb), .8); }
+  100% { transform: scale(1); }
+}
+
+.loading-label {
+  color: rgba(255, 255, 255, .85);
+  font-size: 1rem;
+  letter-spacing: .02em;
+  transition: color .3s ease;
+}
+
+.loading-sub {
+  color: rgba(255, 197, 211, .8);
+  font-size: .85rem;
+}
+
+.skip-btn {
+  margin-top: 1.4rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, .28);
+  color: rgba(255, 255, 255, .75);
+  padding: .55rem 1.2rem;
+  border-radius: 999px;
+  font-size: .8rem;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity .5s ease, background .2s ease, border-color .2s ease;
+}
+
+.skip-btn.show {
+  opacity: 1;
+}
+
+.skip-btn:hover {
+  background: rgba(255, 255, 255, .08);
+  border-color: rgba(255, 255, 255, .5);
+}
+
+.skip-btn:focus-visible {
+  outline: 2px solid var(--pink);
+  outline-offset: 2px;
+}
+
+/* Botón principal interactivo al alcanzar 21 */
+.enter-btn {
+  display: none;
+  margin-top: 1.2rem;
+  background: linear-gradient(100deg, var(--blue), var(--pink));
+  border: none;
+  color: #fff;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1.05rem;
+  padding: .85rem 1.9rem;
+  border-radius: 999px;
+  cursor: pointer;
+  box-shadow: 0 10px 30px rgba(var(--pink-rgb), .55);
+  transition: transform .25s var(--ease), box-shadow .25s var(--ease), opacity .4s ease;
+  animation: enterBtnPulse 2.2s infinite ease-in-out;
+}
+
+.enter-btn.show {
+  display: inline-flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.enter-btn:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 15px 35px rgba(var(--pink-rgb), .75);
+}
+
+.enter-btn:focus-visible {
+  outline: 2px solid #fff;
+  outline-offset: 3px;
+}
+
+@keyframes enterBtnPulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 0 8px 24px rgba(var(--pink-rgb), .45);
+  }
+  50% {
+    transform: scale(1.04);
+    box-shadow: 0 14px 34px rgba(var(--pink-rgb), .75), 0 0 15px rgba(var(--gold-rgb), .4);
+  }
+}

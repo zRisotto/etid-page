@@ -1,0 +1,104 @@
+/* ============================================================
+   VARIABLES Y TOKENS — Colores, tipografías y reset base
+   ============================================================ */
+:root {
+  /* Paleta de Colores */
+  --pink: #FFC5D3;
+  --pink-rgb: 255, 197, 211;
+  --blue: #96C6E0;
+  --blue-rgb: 150, 198, 224;
+  --gold: #F0B860;
+  --gold-rgb: 240, 184, 96;
+
+  /* Colores de Texto y Fondos */
+  --ink: #3B2E45;
+  --ink-soft: #7a6a84;
+  --bg-light: #FFF9FB;
+  --bg-light-2: #EAF5FB;
+  --bg-dark: #120E1A;
+
+  /* Radios de borde */
+  --radius-lg: 28px;
+  --radius-md: 18px;
+  --radius-sm: 10px;
+
+  /* Tipografías */
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-body: 'Manrope', system-ui, sans-serif;
+
+  /* Curva de animación suave */
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+/* Reset y estructura general */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-body);
+  color: var(--ink);
+  background: var(--bg-light);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+body.locked {
+  overflow: hidden;
+  height: 100%;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  margin: 0;
+  font-weight: 600;
+}
+
+p {
+  margin: 0;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font-family: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* Accesibilidad: Reducción de movimiento */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .float-heart, .scroll-hint, .flame, .hero-img, .enter-btn {
+    animation: none !important;
+  }
+  * {
+    transition-duration: .001ms !important;
+    animation-duration: .001ms !important;
+  }
+}

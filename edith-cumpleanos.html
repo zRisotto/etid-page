@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Feliz Cumpleaños Edith 🎂</title>
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Estilos CSS Modularizados -->
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="locked">
+
+  <!-- ============================================================
+       PANTALLA DE CARGA (LOADER)
+       ============================================================ -->
+  <div id="loading-screen">
+    <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+    <div class="loading-content">
+      <div class="loading-number" id="loading-number">0</div>
+      <p class="loading-label" id="loading-label">Preparando tu sorpresa…</p>
+      <p class="loading-sub">21 razones para celebrar hoy</p>
+      <button type="button" class="enter-btn" id="enter-btn">Toca para entrar ✨</button>
+      <button type="button" class="skip-btn" id="skip-btn">Saltar</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SITIO PRINCIPAL
+       ============================================================ -->
+  <!-- Lienzo de partículas interactivas de fondo -->
+  <canvas id="particles-canvas" aria-hidden="true"></canvas>
+
+  <div id="site">
+
+    <!-- 1. HERO -->
+    <section class="hero" id="hero">
+      <div class="hero-image-wrap">
+        <img src="assets/mainetid.png" alt="Edith de pequeña" class="hero-img">
+      </div>
+      <span class="hero-heart" aria-hidden="true">♡</span>
+      <h1 class="hero-title">Feliz cumpleaños<span class="hero-name">Edith</span></h1>
+      <p class="hero-sub">Hoy el mundo tiene un motivo más para sonreír.</p>
+      <span class="hero-date">21 años</span>
+      <span class="scroll-hint" aria-hidden="true"></span>
+    </section>
+
+    <!-- 2. EDAD (21) -->
+    <section class="age-section" id="age">
+      <div class="wrap">
+        <div class="age-number-wrap">
+          <div class="age-number">21</div>
+        </div>
+        <div class="age-underline"></div>
+        <p class="age-text">
+          Veintiuno no es solo un número: es todo lo que has construido, reído y aprendido para llegar hasta aquí.
+          Hoy celebramos exactamente eso — a ti, tal y como eres.
+        </p>
+      </div>
+    </section>
+
+    <!-- ÁREA CON MÁRGENES LATERALES VICHY (después de age-section hasta el final) -->
+    <div class="flanked-content" id="flanked-content">
+      <!-- Columnas laterales con textura vichy -->
+      <div class="side-flank-col side-flank-col--left" aria-hidden="true">
+        <div class="side-flank"></div>
+      </div>
+      <div class="side-flank-col side-flank-col--right" aria-hidden="true">
+        <div class="side-flank"></div>
+      </div>
+
+      <!-- 3. CARTA / SOBRE -->
+      <section class="letter-section" id="letter">
+        <div class="wrap" style="display:flex; flex-direction:column; align-items:center;">
+          <div class="section-head">
+            <h2>Un mensaje para ti</h2>
+            <p>Toca el sobre para abrirlo</p>
+          </div>
+
+          <div class="envelope-scene">
+            <div class="envelope" id="envelope" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir carta">
+              <div class="env-body">
+                <div class="env-letter"><span class="env-letter-icon" aria-hidden="true">💌</span></div>
+                <div class="env-flap"></div>
+                <div class="env-seal" aria-hidden="true">♥</div>
+              </div>
+            </div>
+          </div>
+          <p class="letter-hint" id="envelope-hint">Toca para abrir</p>
+
+          <div class="letter-paper" id="letter-paper">
+            <p>Edith, escribe aquí el mensaje que quieres que lea al abrir la carta — algo tuyo, en tus palabras, para que sea el momento más especial de la página.</p>
+            <p>Este es un espacio de ejemplo: puedes reemplazar este párrafo por lo que realmente quieras decirle en su cumpleaños número 21.</p>
+            <span class="letter-sign">Con cariño</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- 4. GALERÍA DE RECUERDOS -->
+      <section class="gallery-section" id="gallery">
+        <div class="wrap">
+          <div class="section-head">
+            <h2>Momentos para recordar</h2>
+            <p>Toca cada tarjeta para ver más</p>
+          </div>
+          <p class="gallery-hint">Toca cada tarjeta para descubrir un mensaje especial.</p>
+          <div class="gallery-grid" id="gallery-grid">
+            <!-- Las tarjetas se generan dinámicamente desde js/config.js y js/gallery.js -->
+          </div>
+        </div>
+      </section>
+
+      <!-- 5. DESEO / VELAS / PASTEL -->
+      <section class="wish-section" id="wish">
+        <div class="wrap" style="display:flex; flex-direction:column; align-items:center;">
+          <div class="section-head">
+            <h2>Pide un deseo</h2>
+            <p>Toca las velas, una por una, para apagarlas</p>
+          </div>
+
+          <div class="cake-scene">
+            <div class="cake-watermark" aria-hidden="true">21</div>
+            <div class="cake-candles" id="cake-candles">
+              <div class="candle"><div class="flame" tabindex="0" role="button" aria-label="Apagar vela 1"></div></div>
+              <div class="candle"><div class="flame" tabindex="0" role="button" aria-label="Apagar vela 2"></div></div>
+            </div>
+            <div class="cake-body" id="cake-body">
+              <div class="cake-tier"></div>
+            </div>
+          </div>
+          <p class="wish-hint" id="wish-hint">Faltan 2 velas por apagar</p>
+
+          <div class="wish-message" id="wish-message">
+            <p>¡Feliz cumpleaños número 21, Edith! Que este nuevo año esté lleno de todo lo que te hace brillar. 🎉💙</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- 6. FOOTER -->
+      <footer>
+        <span class="footer-heart" aria-hidden="true">♡</span>
+        <p>Hecho con cariño para tu día especial</p>
+        <span class="footer-sign">21.09</span>
+      </footer>
+
+    </div>
+
+  </div>
+
+  <!-- ============================================================
+       SCRIPTS MODULARIZADOS
+       ============================================================ -->
+  <!-- Configuración personalizable (mensajes, recuerdos, datos) -->
+  <script defer src="js/config.js"></script>
+  <!-- Lógica de la pantalla de carga (Matrix y contador con avance) -->
+  <script defer src="js/loader.js"></script>
+  <!-- Fondo interactivo de partículas -->
+  <script defer src="js/particles.js"></script>
+  <!-- Interacción del sobre y carta -->
+  <script defer src="js/envelope.js"></script>
+  <!-- Galería interactiva de tarjetas con giro 3D -->
+  <script defer src="js/gallery.js"></script>
+  <!-- Pastel, soplado de velas y confeti -->
+  <script defer src="js/cake.js"></script>
+  <!-- Inicialización y orquestación general -->
+  <script defer src="js/main.js"></script>
+
+</body>
+</html>

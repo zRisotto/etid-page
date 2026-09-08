@@ -1,0 +1,8 @@
+/* ============================================================
+   HOJA DE ESTILOS PRINCIPAL
+   Importa los módulos de diseño de la página de Edith
+   ============================================================ */
+
+@import url('./variables.css');
+@import url('./loader.css');
+@import url('./components.css');
