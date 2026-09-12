@@ -1,0 +1,343 @@
+/* ============================================================
+   ESTILOS DE MÁRGENES DE STICKERS (HERO SECTION)
+   Distribución en 'U': Los 3 personajes inferiores de cada lado
+   se curvan hacia el centro y sobrelapan la sección inferior (Vichy)
+   ============================================================ */
+
+/* 1. Sección Hero configurada para permitir el desborde inferior (overlap) */
+.hero {
+  position: relative;
+  /* IMPORTANTE: overflow visible para que los stickers inferiores invadan la siguiente sección */
+  overflow: visible !important;
+  box-sizing: border-box;
+  padding-left: clamp(15px, 18vw, 280px) !important;
+  padding-right: clamp(15px, 18vw, 280px) !important;
+  z-index: 20; /* Garantiza que los stickers pasen POR ENCIMA de la textura Vichy de abajo */
+}
+
+/* 2. Contenedores laterales de stickers en Hero */
+.sticker-margin {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  height: 100%;
+  width: clamp(210px, 20vw, 280px);
+  z-index: 25;
+  overflow: visible !important; /* Permite a los stickers curvarse libremente hacia el centro */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 20px 8px 10px 8px;
+  box-sizing: border-box;
+  pointer-events: none; /* Áreas vacías transparentes dejan pasar clics al contenido */
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sticker-margin--left {
+  left: 6px;
+}
+
+.sticker-margin--right {
+  right: 6px;
+}
+
+/* 3. Items / Stickers individuales */
+.sticker-item {
+  --tx: 0px;
+  --ty: 0px;
+  --rot: 0deg;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 250px;
+  height: clamp(120px, 18vh, 190px);
+  margin-top: -38px; /* Overlap controlado vertical */
+  pointer-events: auto; /* Activa la interacción y clics */
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0;
+  outline: none;
+  isolation: isolate;
+  transform-origin: center center;
+  transform: translate(var(--tx), var(--ty)) rotate(var(--rot));
+  transition: transform 0.24s cubic-bezier(0.175, 0.885, 0.32, 1.275),
+              filter 0.24s ease,
+              z-index 0s;
+  will-change: transform, filter;
+}
+
+.sticker-item:first-child {
+  margin-top: 0;
+}
+
+/* 4. Comportamiento y estética de las imágenes PNG */
+.sticker-img {
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  display: block;
+  pointer-events: auto;
+  /* Relieve de calcomanía física con silueta blanca y sombra de profundidad */
+  filter: drop-shadow(0 6px 14px rgba(25, 15, 35, 0.26))
+          drop-shadow(0 0 2px rgba(255, 255, 255, 0.9));
+  transition: filter 0.22s ease, transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  -webkit-user-drag: none;
+}
+
+/* Ajuste proporcional para Pim con gorro */
+.sticker-item[data-sound="pim-gorro"] .sticker-img,
+.sticker-img--pim {
+  transform: scale(1.8);
+  transform-origin: center center;
+}
+
+/* 5. Escalonamiento de Capas (z-index) */
+.sticker-item:nth-child(1) { z-index: 11; }
+.sticker-item:nth-child(2) { z-index: 12; }
+.sticker-item:nth-child(3) { z-index: 13; }
+.sticker-item:nth-child(4) { z-index: 14; }
+.sticker-item:nth-child(5) { z-index: 15; }
+.sticker-item:nth-child(6) { z-index: 16; }
+.sticker-item:nth-child(7) { z-index: 17; }
+
+/* ============================================================
+   DISTRIBUCIÓN EN 'U' ASIMÉTRICA Y NATURAL
+   Las últimas 3 imágenes se desplazan progresivamente hacia el centro
+   y sobrepasan el borde inferior para invadir la textura Vichy
+   ============================================================ */
+
+/* --- LATERAL IZQUIERDO (7 Personajes) --- */
+/* 1. Minion (Arriba izquierda) */
+.sticker-margin--left .sticker-item:nth-child(1) {
+  align-self: flex-start;
+  --tx: -6px;
+  --rot: -6deg;
+}
+
+/* 2. Tifa */
+.sticker-margin--left .sticker-item:nth-child(2) {
+  align-self: flex-end;
+  --tx: 10px;
+  --rot: 7deg;
+}
+
+/* 3. Jin */
+.sticker-margin--left .sticker-item:nth-child(3) {
+  align-self: flex-start;
+  --tx: -8px;
+  --rot: -7deg;
+}
+
+/* 4. Annie */
+.sticker-margin--left .sticker-item:nth-child(4) {
+  align-self: center;
+  --tx: 8px;
+  --rot: 5deg;
+}
+
+/* 5. Pim con gorro (INICIA LA CURVATURA EN 'U' HACIA EL CENTRO) */
+.sticker-margin--left .sticker-item:nth-child(5) {
+  align-self: flex-end;
+  --tx: clamp(45px, 5.5vw, 90px);
+  --ty: 6px;
+  --rot: -5deg;
+}
+
+/* 6. Tommy (MÁS HACIA EL CENTRO Y BAJANDO AL BORDE INFERIOR) */
+.sticker-margin--left .sticker-item:nth-child(6) {
+  align-self: flex-end;
+  --tx: clamp(115px, 12vw, 185px);
+  --ty: clamp(20px, 3vh, 38px);
+  --rot: 8deg;
+}
+
+/* 7. Yakuza (MÁXIMA INVASIÓN CENTRAL + SOBRELAPA LA SECCIÓN INFERIOR VICHY) */
+.sticker-margin--left .sticker-item:nth-child(7),
+.sticker-margin--left .sticker-item--bottom-pinned {
+  align-self: flex-end;
+  margin-top: auto !important;
+  margin-bottom: 0;
+  --tx: clamp(180px, 19vw, 290px);
+  /* ty positivo empuja a Yakuza fuera del Hero, descansando sobre la textura Vichy */
+  --ty: clamp(40px, 6vh, 75px);
+  --rot: -4deg;
+  z-index: 22; /* Se coloca sobre la costura de secciones y sobre la textura */
+}
+
+
+/* --- LATERAL DERECHO (7 Personajes) --- */
+/* 1. Gyro (Arriba derecha) */
+.sticker-margin--right .sticker-item:nth-child(1) {
+  align-self: flex-end;
+  --tx: 6px;
+  --rot: 7deg;
+}
+
+/* 2. Ash */
+.sticker-margin--right .sticker-item:nth-child(2) {
+  align-self: flex-start;
+  --tx: -10px;
+  --rot: -8deg;
+}
+
+/* 3. Bruno */
+.sticker-margin--right .sticker-item:nth-child(3) {
+  align-self: flex-end;
+  --tx: 8px;
+  --rot: 7deg;
+}
+
+/* 4. Clark */
+.sticker-margin--right .sticker-item:nth-child(4) {
+  align-self: center;
+  --tx: -8px;
+  --rot: -5deg;
+}
+
+/* 5. Hamudd (INICIA LA CURVATURA EN 'U' HACIA EL CENTRO) */
+.sticker-margin--right .sticker-item:nth-child(5) {
+  align-self: flex-start;
+  --tx: clamp(-45px, -5.5vw, -90px);
+  --ty: 6px;
+  --rot: 6deg;
+}
+
+/* 6. Noctis (MÁS HACIA EL CENTRO Y BAJANDO AL BORDE INFERIOR) */
+.sticker-margin--right .sticker-item:nth-child(6) {
+  align-self: flex-start;
+  margin-top: auto !important;
+  --tx: clamp(-115px, -12vw, -185px);
+  --ty: clamp(20px, 3vh, 38px);
+  --rot: -7deg;
+}
+
+/* 7. Miku (MÁXIMA INVASIÓN CENTRAL + SOBRELAPA LA SECCIÓN INFERIOR VICHY) */
+.sticker-margin--right .sticker-item:nth-child(7),
+.sticker-margin--right .sticker-item--bottom-pinned {
+  align-self: flex-start;
+  margin-top: -46px !important;
+  margin-bottom: 0;
+  --tx: clamp(-180px, -19vw, -290px);
+  /* ty positivo empuja a Miku sobre la textura Vichy de la sección inferior */
+  --ty: clamp(40px, 6vh, 75px);
+  --rot: 5deg;
+  z-index: 22; /* Se coloca sobre la costura de secciones y sobre la textura */
+}
+
+/* ============================================================
+   EFECTOS INTERACTIVOS: HOVER Y CLIC EN POSICIÓN EN 'U'
+   ============================================================ */
+
+/* Al pasar el cursor, el sticker conserva su traslación de la 'U' pero sobresale a z-index 99 */
+.sticker-item:hover,
+.sticker-item:focus-visible {
+  transform: translate(var(--tx), var(--ty)) scale(1.16) rotate(calc(var(--rot) * 0.35)) !important;
+  z-index: 99 !important;
+  transition: transform 0.22s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.sticker-item:hover .sticker-img,
+.sticker-item:focus-visible .sticker-img {
+  filter: drop-shadow(0 16px 32px rgba(25, 15, 35, 0.44))
+          drop-shadow(0 0 6px rgba(255, 255, 255, 0.98));
+}
+
+/* Feedback táctil al clic (escala 0.93 en su posición) */
+.sticker-item:active,
+.sticker-item.is-clicked {
+  transform: translate(var(--tx), var(--ty)) scale(0.93) rotate(var(--rot)) !important;
+  transition: transform 0.08s ease-in-out;
+}
+
+.sticker-item.is-clicked .sticker-img {
+  animation: stickerPopU 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes stickerPopU {
+  0%   { transform: scale(0.93); }
+  45%  { transform: scale(1.2); }
+  100% { transform: scale(1.14); }
+}
+
+/* ============================================================
+   RESPONSIVIDAD Y CURVATURA ADAPTATIVA
+   ============================================================ */
+@media (max-width: 1200px) {
+  .sticker-margin {
+    width: clamp(170px, 18vw, 220px);
+  }
+  .sticker-item {
+    max-width: 190px;
+    height: clamp(105px, 16vh, 150px);
+    margin-top: -30px;
+  }
+  /* Curvatura en pantallas medianas */
+  .sticker-margin--left .sticker-item:nth-child(5) { --tx: 40px; }
+  .sticker-margin--left .sticker-item:nth-child(6) { --tx: 90px; }
+  .sticker-margin--left .sticker-item:nth-child(7) { --tx: 140px; --ty: 35px; }
+
+  .sticker-margin--right .sticker-item:nth-child(5) { --tx: -40px; }
+  .sticker-margin--right .sticker-item:nth-child(6) { --tx: -90px; }
+  .sticker-margin--right .sticker-item:nth-child(7) { --tx: -140px; --ty: 35px; }
+
+  .hero {
+    padding-left: clamp(15px, 17vw, 200px) !important;
+    padding-right: clamp(15px, 17vw, 200px) !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .sticker-margin {
+    width: 115px;
+    padding: 10px 4px;
+  }
+  .sticker-item {
+    max-width: 110px;
+    height: clamp(75px, 13vh, 105px);
+    margin-top: -22px;
+  }
+  /* Curvatura compacta para tablet */
+  .sticker-margin--left .sticker-item:nth-child(5) { --tx: 24px; }
+  .sticker-margin--left .sticker-item:nth-child(6) { --tx: 52px; }
+  .sticker-margin--left .sticker-item:nth-child(7) { --tx: 80px; --ty: 22px; }
+
+  .sticker-margin--right .sticker-item:nth-child(5) { --tx: -24px; }
+  .sticker-margin--right .sticker-item:nth-child(6) { --tx: -52px; }
+  .sticker-margin--right .sticker-item:nth-child(7) { --tx: -80px; --ty: 22px; }
+
+  .hero {
+    padding-left: 100px !important;
+    padding-right: 100px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .sticker-margin {
+    width: 70px;
+    padding: 6px 2px;
+    opacity: 0.92;
+  }
+  .sticker-item {
+    max-width: 68px;
+    height: clamp(50px, 11vh, 72px);
+    margin-top: -14px;
+  }
+  .sticker-margin--left .sticker-item:nth-child(5) { --tx: 12px; }
+  .sticker-margin--left .sticker-item:nth-child(6) { --tx: 25px; }
+  .sticker-margin--left .sticker-item:nth-child(7) { --tx: 38px; --ty: 15px; }
+
+  .sticker-margin--right .sticker-item:nth-child(5) { --tx: -12px; }
+  .sticker-margin--right .sticker-item:nth-child(6) { --tx: -25px; }
+  .sticker-margin--right .sticker-item:nth-child(7) { --tx: -38px; --ty: 15px; }
+
+  .hero {
+    padding-left: 65px !important;
+    padding-right: 65px !important;
+  }
+}

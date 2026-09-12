@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Demostración: Stickers en Hero + Textura Vichy en Secciones Inferiores</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./css/stickers.css">
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Manrope', system-ui, sans-serif;
+      background: radial-gradient(circle at 50% 20%, #FFF4F8 0%, #FFF9FB 60%, #EBF4FA 100%);
+      color: #3B2E45;
+      overflow-x: hidden;
+    }
+
+    /* Simulación de la sección Hero */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      box-sizing: border-box;
+      padding: 2rem 1rem;
+    }
+
+    .demo-card {
+      background: rgba(255, 255, 255, 0.88);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(255, 255, 255, 0.9);
+      border-radius: 28px;
+      padding: 42px 32px;
+      max-width: 580px;
+      box-shadow: 0 16px 40px rgba(59, 46, 69, 0.08);
+      position: relative;
+      z-index: 5;
+    }
+
+    h1 {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(2.1rem, 4.5vw, 3rem);
+      margin: 12px 0 14px 0;
+      color: #2D2236;
+    }
+
+    p {
+      line-height: 1.65;
+      color: #6C5B75;
+      font-size: 1.05rem;
+      margin-bottom: 20px;
+    }
+
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 16px;
+      border-radius: 99px;
+      background: #FFE3EC;
+      color: #D6456E;
+      font-weight: 600;
+      font-size: 0.88rem;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      background: #E83E8C;
+      border-radius: 50%;
+      box-shadow: 0 0 8px #E83E8C;
+    }
+
+    /* Simulación de la sección inferior con textura Vichy intacta */
+    .flanked-content {
+      position: relative;
+      width: 100%;
+      min-height: 100vh;
+      background: #FFFDFE;
+      border-top: 1px dashed #E8D6E2;
+      padding: 80px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .side-flank-col {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: clamp(40px, 9vw, 135px);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .side-flank-col--left { left: 0; }
+    .side-flank-col--right { right: 0; }
+
+    .side-flank {
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      width: 100%;
+      background-image: url('assets/margen%20texture.jpg');
+      background-repeat: repeat-y;
+      background-size: 115px auto;
+      opacity: 0.92;
+      pointer-events: none;
+    }
+
+    .section-content {
+      max-width: 680px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ============================================================
+       1. SECCIÓN PRINCIPAL: HERO CON STICKERS ASIMÉTRICOS
+       ============================================================ -->
+  <section class="hero" id="hero">
+
+    <!-- Margen Lateral Izquierdo (7 Personajes Asimétricos) -->
+    <aside class="sticker-margin sticker-margin--left" id="margin-left" aria-label="Personajes izquierda">
+      <!-- 1. Minion (Arriba) -->
+      <button type="button" class="sticker-item" data-sound="minion" aria-label="Minion">
+        <img src="assets/Personajes/minion.png" alt="Minion" class="sticker-img">
+      </button>
+
+      <!-- 2. Tifa -->
+      <button type="button" class="sticker-item" data-sound="tifa" aria-label="Tifa">
+        <img src="assets/Personajes/tifa.png" alt="Tifa" class="sticker-img">
+      </button>
+
+      <!-- 3. Jin -->
+      <button type="button" class="sticker-item" data-sound="jin" aria-label="Jin">
+        <img src="assets/Personajes/jin.png" alt="Jin" class="sticker-img">
+      </button>
+
+      <!-- 4. Annie -->
+      <button type="button" class="sticker-item" data-sound="annie" aria-label="Annie">
+        <img src="assets/Personajes/annie.png" alt="Annie" class="sticker-img">
+      </button>
+
+      <!-- 5. Pim con gorro -->
+      <button type="button" class="sticker-item" data-sound="pim-gorro" aria-label="Pim con gorro">
+        <img src="assets/Personajes/pim-gorro.png" alt="Pim con gorro" class="sticker-img sticker-img--pim">
+      </button>
+
+      <!-- 6. Tommy -->
+      <button type="button" class="sticker-item" data-sound="tommy" aria-label="Tommy">
+        <img src="assets/Personajes/tommy.png" alt="Tommy" class="sticker-img">
+      </button>
+
+      <!-- 7. Yakuza (DEBE ir pegado hasta abajo) -->
+      <button type="button" class="sticker-item sticker-item--bottom-pinned" data-sound="yakuza" aria-label="Yakuza">
+        <img src="assets/Personajes/yakuza.png" alt="Yakuza" class="sticker-img">
+      </button>
+    </aside>
+
+    <!-- Margen Lateral Derecho (7 Personajes Asimétricos) -->
+    <aside class="sticker-margin sticker-margin--right" id="margin-right" aria-label="Personajes derecha">
+      <!-- 1. Gyro (Arriba) -->
+      <button type="button" class="sticker-item" data-sound="gyro" aria-label="Gyro">
+        <img src="assets/Personajes/gyro.png" alt="Gyro" class="sticker-img">
+      </button>
+
+      <!-- 2. Ash -->
+      <button type="button" class="sticker-item" data-sound="ash" aria-label="Ash">
+        <img src="assets/Personajes/ash.png" alt="Ash" class="sticker-img">
+      </button>
+
+      <!-- 3. Bruno -->
+      <button type="button" class="sticker-item" data-sound="bruno" aria-label="Bruno">
+        <img src="assets/Personajes/bruno.png" alt="Bruno" class="sticker-img">
+      </button>
+
+      <!-- 4. Clark -->
+      <button type="button" class="sticker-item" data-sound="clark" aria-label="Clark">
+        <img src="assets/Personajes/clark.png" alt="Clark" class="sticker-img">
+      </button>
+
+      <!-- 5. Hamudd -->
+      <button type="button" class="sticker-item" data-sound="hamudd" aria-label="Hamudd">
+        <img src="assets/Personajes/hamudd.png" alt="Hamudd" class="sticker-img">
+      </button>
+
+      <!-- 6. Noctis (Parte inferior) -->
+      <button type="button" class="sticker-item" data-sound="noctis" aria-label="Noctis">
+        <img src="assets/Personajes/noctis.png" alt="Noctis" class="sticker-img">
+      </button>
+
+      <!-- 7. Miku (Parte inferior / Pegada al fondo) -->
+      <button type="button" class="sticker-item sticker-item--bottom-pinned" data-sound="miku" aria-label="Hatsune Miku">
+        <img src="assets/Personajes/miku.png" alt="Hatsune Miku" class="sticker-img">
+      </button>
+    </aside>
+
+    <!-- Tarjeta Central de la Bienvenida -->
+    <div class="demo-card">
+      <div class="status-badge">
+        <span class="status-dot"></span>
+        Distribución en 'U' + Overlap Vichy
+      </div>
+      <h1>¡Feliz Cumpleaños Edith! 🎂</h1>
+      <p>
+        Los personajes ahora forman una <strong>curvatura en 'U'</strong>: los primeros bajan por los costados y <strong>los últimos 3 de cada columna avanzan progresivamente hacia el centro</strong> sin tocarse.
+      </p>
+      <p style="font-size: 0.95rem; color: #8F7E98; margin-bottom: 0;">
+        👇 <strong>Observa abajo:</strong> Tommy, <strong>Yakuza</strong>, Noctis y <strong>Miku</strong> sobrepasan el límite del Hero y reposan <em>por encima de las columnas con textura Vichy</em>.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       2. SECCIONES SIGUIENTES: MÁRGENES VICHY INTACTOS
+       ============================================================ -->
+  <div class="flanked-content" id="flanked-content">
+    <div class="side-flank-col side-flank-col--left">
+      <div class="side-flank"></div>
+    </div>
+    <div class="side-flank-col side-flank-col--right">
+      <div class="side-flank"></div>
+    </div>
+
+    <div class="section-content">
+      <h2 style="font-family: 'Fraunces', serif; font-size: 2.2rem; margin-top: 60px;">Sección de Carta y Recuerdos</h2>
+      <p style="margin-top: 18px; color: #5B4E63;">
+        Aquí los márgenes laterales utilizan la textura original de mantel vichy (<code>assets/margen texture.jpg</code>). Ningún estilo de los stickers afecta esta sección ni las inferiores.
+      </p>
+    </div>
+  </div>
+
+  <script src="./js/stickers.js"></script>
+</body>
+</html>

@@ -37,8 +37,62 @@
 
   <div id="site">
 
-    <!-- 1. HERO -->
+    <!-- 1. HERO (Sección principal con stickers decorativos) -->
     <section class="hero" id="hero">
+
+      <!-- ============================================================
+           MÁRGENES LATERALES INTERACTIVOS (COLLAGE DE STICKERS EN HERO)
+           ============================================================ -->
+      <!-- Lateral Izquierdo (7 Personajes) -->
+      <aside class="sticker-margin sticker-margin--left" id="margin-left" aria-label="Personajes decorativos izquierda">
+        <button type="button" class="sticker-item" data-sound="minion" aria-label="Minion">
+          <img src="assets/Personajes/minion.png" alt="Minion" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="tifa" aria-label="Tifa">
+          <img src="assets/Personajes/tifa.png" alt="Tifa" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="jin" aria-label="Jin">
+          <img src="assets/Personajes/jin.png" alt="Jin" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="annie" aria-label="Annie">
+          <img src="assets/Personajes/annie.png" alt="Annie" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="pim-gorro" aria-label="Pim con gorro">
+          <img src="assets/Personajes/pim-gorro.png" alt="Pim con gorro" class="sticker-img sticker-img--pim">
+        </button>
+        <button type="button" class="sticker-item" data-sound="tommy" aria-label="Tommy">
+          <img src="assets/Personajes/tommy.png" alt="Tommy" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item sticker-item--bottom-pinned" data-sound="yakuza" aria-label="Yakuza">
+          <img src="assets/Personajes/yakuza.png" alt="Yakuza" class="sticker-img">
+        </button>
+      </aside>
+
+      <!-- Lateral Derecho (7 Personajes) -->
+      <aside class="sticker-margin sticker-margin--right" id="margin-right" aria-label="Personajes decorativos derecha">
+        <button type="button" class="sticker-item" data-sound="gyro" aria-label="Gyro">
+          <img src="assets/Personajes/gyro.png" alt="Gyro" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="ash" aria-label="Ash">
+          <img src="assets/Personajes/ash.png" alt="Ash" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="bruno" aria-label="Bruno">
+          <img src="assets/Personajes/bruno.png" alt="Bruno" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="clark" aria-label="Clark">
+          <img src="assets/Personajes/clark.png" alt="Clark" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="hamudd" aria-label="Hamudd">
+          <img src="assets/Personajes/hamudd.png" alt="Hamudd" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item" data-sound="noctis" aria-label="Noctis">
+          <img src="assets/Personajes/noctis.png" alt="Noctis" class="sticker-img">
+        </button>
+        <button type="button" class="sticker-item sticker-item--bottom-pinned" data-sound="miku" aria-label="Hatsune Miku">
+          <img src="assets/Personajes/miku.png" alt="Hatsune Miku" class="sticker-img">
+        </button>
+      </aside>
+
       <div class="hero-image-wrap">
         <img src="assets/mainetid.png" alt="Edith de pequeña" class="hero-img">
       </div>
@@ -237,6 +291,8 @@
   <script defer src="js/cake.js"></script>
   <!-- Inicialización y orquestación general -->
   <script defer src="js/main.js"></script>
+  <!-- Stickers interactivos y audio -->
+  <script defer src="js/stickers.js"></script>
 
 </body>
 </html>
