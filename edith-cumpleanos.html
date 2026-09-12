@@ -8,7 +8,7 @@
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&family=Fraunces:ital,wght@0,400;0,500;0,600;0,700;1,500;1,600&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
   <!-- Estilos CSS Modularizados -->
   <link rel="stylesheet" href="css/style.css">
@@ -49,21 +49,7 @@
       <span class="scroll-hint" aria-hidden="true"></span>
     </section>
 
-    <!-- 2. EDAD (21) -->
-    <section class="age-section" id="age">
-      <div class="wrap">
-        <div class="age-number-wrap">
-          <div class="age-number">21</div>
-        </div>
-        <div class="age-underline"></div>
-        <p class="age-text">
-          Veintiuno no es solo un número: es todo lo que has construido, reído y aprendido para llegar hasta aquí.
-          Hoy celebramos exactamente eso — a ti, tal y como eres.
-        </p>
-      </div>
-    </section>
-
-    <!-- ÁREA CON MÁRGENES LATERALES VICHY (después de age-section hasta el final) -->
+    <!-- ÁREA CON MÁRGENES LATERALES VICHY (desde el Hero hasta el final) -->
     <div class="flanked-content" id="flanked-content">
       <!-- Columnas laterales con textura vichy -->
       <div class="side-flank-col side-flank-col--left" aria-hidden="true">
@@ -73,37 +59,111 @@
         <div class="side-flank"></div>
       </div>
 
-      <!-- 3. CARTA / SOBRE -->
-      <section class="letter-section" id="letter">
-        <div class="wrap" style="display:flex; flex-direction:column; align-items:center;">
-          <div class="section-head">
+      <!-- 2. CARTA / SOBRE INTERACTIVO -->
+      <section class="letter-section zone-stage" id="letter">
+        <div class="wrap envelope-wrap">
+          <div class="section-head reveal-on-scroll">
             <h2>Un mensaje para ti</h2>
             <p>Toca el sobre para abrirlo</p>
           </div>
 
-          <div class="envelope-scene">
-            <div class="envelope" id="envelope" role="button" tabindex="0" aria-expanded="false" aria-label="Abrir carta">
-              <div class="env-body">
-                <div class="env-letter"><span class="env-letter-icon" aria-hidden="true">💌</span></div>
-                <div class="env-flap"></div>
-                <div class="env-seal" aria-hidden="true">♥</div>
+          <div class="envelope-scene reveal-on-scroll" id="envelopeScene">
+            <div class="envelope" id="envelope" tabindex="0" role="button" aria-expanded="false" aria-label="Abrir sobre para leer la carta">
+              <div class="env-body"></div>
+
+              <div class="letter" id="letterPaper">
+                <div class="letter-paper-inner">
+                  <span class="star s1" aria-hidden="true"></span>
+                  <span class="star s2" aria-hidden="true"></span>
+                  <span class="star s3" aria-hidden="true"></span>
+                  <div class="letter-text" id="letterText">
+                    <p class="letter-greeting">Mi querida Edith,</p>
+                    <p>Hoy celebramos tus 21 años y todo lo maravilloso que traes a la vida de quienes tenemos la suerte de tenerte cerca. Tu ternura, tu fuerza y esa manera tan tuya de iluminar cualquier lugar hacen que cada día sea más especial.</p>
+                    <p>Gracias por cada risa compartida, por ser tan auténtica y por compartir conmigo un año más de tu vida. Que estos 21 años vengan cargados de sueños cumplidos, salud, aventuras y motivos infinitos para sonreír.</p>
+                    <p class="letter-closing">Con todo mi cariño,</p>
+                    <span class="letter-signature">Felices 21 ✨</span>
+                  </div>
+                </div>
+              </div>
+
+              <div class="env-flap"></div>
+
+              <div class="seal" aria-hidden="true">
+                <svg viewBox="0 0 100 100">
+                  <circle cx="50" cy="50" r="46" fill="#f4ede2"/>
+                  <circle cx="50" cy="50" r="46" fill="none" stroke="#d5c8b2" stroke-width="2"/>
+                  <path d="M50 20 C 46 32, 34 34, 30 44 C 40 42, 46 46, 48 54
+                           C 44 62, 34 64, 32 74 C 44 70, 52 72, 56 80
+                           C 58 68, 66 64, 70 56 C 60 58, 54 52, 54 44
+                           C 62 40, 66 30, 62 22 C 56 30, 50 30, 50 20 Z"
+                        fill="none" stroke="#bda88b" stroke-width="1.8"/>
+                </svg>
               </div>
             </div>
-          </div>
-          <p class="letter-hint" id="envelope-hint">Toca para abrir</p>
 
-          <div class="letter-paper" id="letter-paper">
-            <p>Edith, escribe aquí el mensaje que quieres que lea al abrir la carta — algo tuyo, en tus palabras, para que sea el momento más especial de la página.</p>
-            <p>Este es un espacio de ejemplo: puedes reemplazar este párrafo por lo que realmente quieras decirle en su cumpleaños número 21.</p>
-            <span class="letter-sign">Con cariño</span>
+            <p class="letter-hint" id="envelope-hint">Toca el sobre para abrirlo</p>
+            <button class="close-btn" id="closeBtn" type="button" aria-label="Cerrar la carta">✕</button>
           </div>
         </div>
       </section>
 
+      <!-- Separador decorativo entre Zona 2 y Zona 3 -->
+      <div class="zone-divider" aria-hidden="true">
+        <span class="zone-divider-line"></span>
+        <span class="zone-divider-symbol">✧</span>
+        <span class="zone-divider-line"></span>
+      </div>
+
+      <!-- SVG gradiente reutilizable para el trazo animado -->
+      <svg width="0" height="0" class="visually-hidden" aria-hidden="true">
+        <defs>
+          <linearGradient id="pj-underline-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#FFC5D3"/>
+            <stop offset="100%" stop-color="#96C6E0"/>
+          </linearGradient>
+        </defs>
+      </svg>
+
+      <!-- 3. COMPARACIÓN FOTOGRÁFICA / CRECIMIENTO -->
+      <section class="growth-section zone-stage" id="growth">
+        <div class="growth-wrap">
+          <div class="growth-grid">
+
+            <!-- Deslizador: Edith de niña -->
+            <div class="growth-slider-col growth-left reveal-on-scroll">
+              <div class="growth-frame-glow">
+                <div class="growth-frame" id="sliderNina"></div>
+              </div>
+            </div>
+
+            <!-- Columna central de texto emotivo -->
+            <div class="growth-text-col reveal-on-scroll" id="textCol">
+              <p class="growth-eyebrow-line">La misma <span class="growth-grad-word">sonrisa</span> de siempre</p>
+              <p class="growth-note-text">Cuando veo estas fotos entiendo mejor por qué te quiero como te quiero. Cambiaste de estatura, de peinado, de todo — menos de esa forma tuya de <span class="growth-highlight">reírte con todo el cuerpo<svg viewBox="0 0 140 9" aria-hidden="true"><path d="M2 6 Q 35 1, 70 5 T 138 4"/></svg></span>. No estuve ahí para todas estas fotos, pero mirarlas me hace quererte un poco más en cada una. Feliz cumpleaños, mi Edith.</p>
+            </div>
+
+            <!-- Deslizador: Edith hoy -->
+            <div class="growth-slider-col growth-right reveal-on-scroll">
+              <div class="growth-frame-glow">
+                <div class="growth-frame" id="sliderHoy"></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- Separador decorativo entre Zona 3 y Zona 4 -->
+      <div class="zone-divider" aria-hidden="true">
+        <span class="zone-divider-line"></span>
+        <span class="zone-divider-symbol">✧</span>
+        <span class="zone-divider-line"></span>
+      </div>
+
       <!-- 4. GALERÍA DE RECUERDOS -->
-      <section class="gallery-section" id="gallery">
-        <div class="wrap">
-          <div class="section-head">
+      <section class="gallery-section zone-stage" id="gallery">
+        <div class="wrap gallery-wrap">
+          <div class="section-head reveal-on-scroll">
             <h2>Momentos para recordar</h2>
             <p>Toca cada tarjeta para ver más</p>
           </div>
@@ -114,15 +174,22 @@
         </div>
       </section>
 
+      <!-- Separador decorativo entre Zona 4 y Zona 5 -->
+      <div class="zone-divider" aria-hidden="true">
+        <span class="zone-divider-line"></span>
+        <span class="zone-divider-symbol">✧</span>
+        <span class="zone-divider-line"></span>
+      </div>
+
       <!-- 5. DESEO / VELAS / PASTEL -->
-      <section class="wish-section" id="wish">
+      <section class="wish-section zone-stage" id="wish">
         <div class="wrap" style="display:flex; flex-direction:column; align-items:center;">
-          <div class="section-head">
+          <div class="section-head reveal-on-scroll">
             <h2>Pide un deseo</h2>
             <p>Toca las velas, una por una, para apagarlas</p>
           </div>
 
-          <div class="cake-scene">
+          <div class="cake-scene reveal-on-scroll">
             <div class="cake-watermark" aria-hidden="true">21</div>
             <div class="cake-candles" id="cake-candles">
               <div class="candle"><div class="flame" tabindex="0" role="button" aria-label="Apagar vela 1"></div></div>
@@ -162,6 +229,8 @@
   <script defer src="js/particles.js"></script>
   <!-- Interacción del sobre y carta -->
   <script defer src="js/envelope.js"></script>
+  <!-- Doble carrusel comparativo de fotos -->
+  <script defer src="js/photo-slider.js"></script>
   <!-- Galería interactiva de tarjetas con giro 3D -->
   <script defer src="js/gallery.js"></script>
   <!-- Pastel, soplado de velas y confeti -->

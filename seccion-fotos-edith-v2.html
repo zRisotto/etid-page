@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Edith</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  /*
+    Clases prefijadas con "pj-" para poder copiar solo <section class="pj-wrap">
+    y este <style> a la página principal sin choques.
+  */
+  :root{
+    --blue:#96C6E0;
+    --pink:#FFC5D3;
+    --ink:#34324a;
+  }
+
+  .pj-wrap{
+    position:relative;
+    overflow:hidden;
+    font-family:'Cormorant Garamond', serif;
+    color:var(--ink);
+    background:
+      radial-gradient(circle at 10% 15%, rgba(255,197,211,.45), transparent 42%),
+      radial-gradient(circle at 90% 20%, rgba(150,198,224,.4), transparent 40%),
+      radial-gradient(circle at 50% 100%, rgba(150,198,224,.3), transparent 45%),
+      #fffdfb;
+    padding:clamp(56px,9vw,110px) clamp(20px,5vw,64px);
+  }
+
+  .pj-grid{
+    display:grid;
+    grid-template-columns:1fr minmax(280px,340px) 1fr;
+    align-items:center;
+    gap:clamp(28px,4vw,56px);
+    max-width:1180px;
+    margin:0 auto;
+    position:relative;
+    z-index:1;
+  }
+  @media (max-width:900px){
+    .pj-grid{ grid-template-columns:1fr; justify-items:center; }
+    .pj-slider-col.pj-left{ order:1; }
+    .pj-text-col{ order:2; margin:8px 0; }
+    .pj-slider-col.pj-right{ order:3; }
+  }
+
+  /* ---------- sliders ---------- */
+  .pj-slider-col{ width:100%; display:flex; justify-content:center; }
+
+  .pj-frame-glow{
+    position:relative;
+    width:100%; max-width:380px;
+  }
+  .pj-frame-glow::before{
+    content:'';
+    position:absolute; inset:-22px;
+    background:linear-gradient(135deg,var(--pink),var(--blue));
+    filter:blur(34px);
+    opacity:.5;
+    z-index:0;
+    border-radius:50%;
+    transition:opacity .5s ease;
+  }
+  .pj-frame-glow:hover::before{ opacity:.75; }
+
+  .pj-frame{
+    position:relative;
+    z-index:1;
+    aspect-ratio:3/4;
+    overflow:hidden;
+    border-radius:3px;
+    box-shadow:0 25px 50px -20px rgba(52,50,74,.4);
+    transition:transform .5s cubic-bezier(.2,.8,.2,1);
+  }
+  .pj-frame-glow:hover .pj-frame{ transform:translateY(-4px) scale(1.015); }
+
+  .pj-track{ position:absolute; inset:0; }
+  .pj-slide{
+    position:absolute; inset:0;
+    opacity:0;
+    transition:opacity 1s ease;
+  }
+  .pj-slide.is-active{ opacity:1; z-index:2; }
+  .pj-slide img{
+    width:100%; height:100%; object-fit:cover; display:block;
+    transform:scale(1);
+    transition:transform 6s ease-out;
+  }
+  .pj-slide.is-active img{ transform:scale(1.09); }
+  .pj-slide::after{
+    content:'';
+    position:absolute; inset:0;
+    background:linear-gradient(165deg, rgba(255,197,211,.28), rgba(150,198,224,.28));
+    mix-blend-mode:soft-light;
+    pointer-events:none;
+  }
+  .pj-slide.is-missing img{ display:none; }
+  .pj-slide.is-missing::before{
+    content:attr(data-placeholder);
+    position:absolute; inset:0; z-index:1;
+    display:flex; align-items:center; justify-content:center;
+    text-align:center; padding:14%;
+    background:linear-gradient(155deg,var(--blue),var(--pink));
+    color:#fff; font-style:italic;
+    font-size:clamp(.95rem,1.6vw,1.05rem);
+    line-height:1.4;
+  }
+
+  .pj-arrow{
+    position:absolute; top:50%; transform:translateY(-50%);
+    width:36px; height:36px; z-index:4;
+    border-radius:50%;
+    border:1px solid rgba(255,255,255,.55);
+    background:rgba(255,255,255,.16);
+    backdrop-filter:blur(6px) saturate(140%);
+    -webkit-backdrop-filter:blur(6px) saturate(140%);
+    color:#fff; font-size:1.15rem; line-height:1;
+    cursor:pointer;
+    display:flex; align-items:center; justify-content:center;
+    opacity:0; transition:opacity .25s ease, transform .25s ease, background .3s ease;
+  }
+  .pj-frame-glow:hover .pj-arrow, .pj-arrow:focus-visible{ opacity:1; }
+  .pj-arrow:hover{ background:linear-gradient(135deg,var(--pink),var(--blue)); transform:translateY(-50%) scale(1.08); }
+  .pj-arrow.prev{ left:12px; }
+  .pj-arrow.next{ right:12px; }
+
+  .pj-dots{
+    display:flex; align-items:center; gap:8px;
+    margin-top:16px;
+  }
+  .pj-dot{
+    width:8px; height:8px; border-radius:50%;
+    background:transparent;
+    border:1.5px solid rgba(52,50,74,.25);
+    padding:0; cursor:pointer;
+    transition:all .4s cubic-bezier(.4,0,.2,1);
+  }
+  .pj-dot:hover{ border-color:var(--blue); }
+  .pj-dot.is-active{
+    width:26px; border-radius:5px; border-color:transparent;
+    background:linear-gradient(90deg,var(--pink),var(--blue));
+  }
+
+  /* ---------- centered intimate text ---------- */
+  .pj-text-col{
+    text-align:center;
+    position:relative;
+    padding:12px 6px;
+  }
+  .pj-text-col::before{
+    content:'';
+    position:absolute; inset:-40px -10px;
+    background:radial-gradient(circle, rgba(255,197,211,.35), rgba(150,198,224,.3) 60%, transparent 75%);
+    filter:blur(30px);
+    z-index:-1;
+  }
+
+  .pj-eyebrow-line{
+    font-style:italic;
+    font-weight:500;
+    font-size:clamp(1.5rem,2.6vw,1.9rem);
+    margin:0 0 .5em;
+    opacity:0;
+    transform:translateY(14px);
+    transition:opacity .8s ease, transform .8s ease;
+  }
+  .pj-eyebrow-line .pj-grad-word{
+    background:linear-gradient(100deg,#d98fa8,var(--blue) 65%);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--blue);
+  }
+
+  .pj-note-text{
+    font-size:clamp(1.1rem,2vw,1.28rem);
+    line-height:1.95;
+    margin:0;
+    outline:none;
+    opacity:0;
+    transform:translateY(18px);
+    transition:opacity .9s ease .15s, transform .9s ease .15s;
+  }
+  .pj-note-text::first-letter{
+    font-family:'Caveat',cursive;
+    font-size:3.1em;
+    font-weight:600;
+    line-height:.75;
+    float:left;
+    padding:.05em .08em 0 0;
+    background:linear-gradient(120deg,var(--pink),var(--blue));
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:var(--blue);
+  }
+  .pj-note-text:empty:before{
+    content:attr(data-placeholder);
+    color:#9a94ad;
+  }
+
+  .pj-text-col.is-visible .pj-eyebrow-line,
+  .pj-text-col.is-visible .pj-note-text{
+    opacity:1; transform:translateY(0);
+  }
+
+  .pj-highlight{ position:relative; white-space:nowrap; }
+  .pj-highlight svg{
+    position:absolute; left:0; bottom:-4px; width:100%; height:9px; overflow:visible;
+  }
+  .pj-highlight path{
+    fill:none; stroke:url(#pj-underline-grad); stroke-width:3; stroke-linecap:round;
+    stroke-dasharray:140; stroke-dashoffset:140;
+    transition:stroke-dashoffset 1s ease .9s;
+  }
+  .pj-text-col.is-visible .pj-highlight path{ stroke-dashoffset:0; }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute">
+  <defs>
+    <linearGradient id="pj-underline-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#FFC5D3"/>
+      <stop offset="100%" stop-color="#96C6E0"/>
+    </linearGradient>
+  </defs>
+</svg>
+
+<section class="pj-wrap">
+  <div class="pj-grid">
+
+    <div class="pj-slider-col pj-left">
+      <div class="pj-frame-glow">
+        <div class="pj-frame" id="sliderNina"></div>
+      </div>
+    </div>
+
+    <div class="pj-text-col" id="textCol">
+      <p class="pj-eyebrow-line">La misma <span class="pj-grad-word">sonrisa</span> de siempre</p>
+      <p class="pj-note-text" contenteditable="true" data-placeholder="Escribe aquí lo que sientes al ver cómo ha cambiado...">Cuando veo estas fotos entiendo mejor por qué te quiero como te quiero. Cambiaste de estatura, de peinado, de todo — menos de esa forma tuya de <span class="pj-highlight">reírte con todo el cuerpo<svg viewBox="0 0 140 9"><path d="M2 6 Q 35 1, 70 5 T 138 4"/></svg></span>. No estuve ahí para todas estas fotos, pero mirarlas me hace quererte un poco más en cada una. Feliz cumpleaños, mi Edith.</p>
+    </div>
+
+    <div class="pj-slider-col pj-right">
+      <div class="pj-frame-glow">
+        <div class="pj-frame" id="sliderHoy"></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  /*
+    Reemplaza las rutas de estos arreglos con las fotos reales de Edith
+    (mismo orden en el que quieres que aparezcan). Si una ruta no existe
+    todavía, el slide muestra un panel de aviso en vez de romperse.
+  */
+  const childhoodPhotos = [
+    'fotos/edith-nina-1.jpg',
+    'fotos/edith-nina-2.jpg',
+    'fotos/edith-nina-3.jpg',
+    'fotos/edith-nina-4.jpg',
+    'fotos/edith-nina-5.jpg'
+  ];
+
+  const adultPhotos = [
+    'fotos/edith-hoy-1.jpg',
+    'fotos/edith-hoy-2.jpg',
+    'fotos/edith-hoy-3.jpg',
+    'fotos/edith-hoy-4.jpg',
+    'fotos/edith-hoy-5.jpg'
+  ];
+
+  function initSlider(containerId, photos, placeholderText){
+    const el = document.getElementById(containerId);
+    let current = 0;
+    let timer = null;
+
+    el.innerHTML = `
+      <div class="pj-track"></div>
+      <button class="pj-arrow prev" aria-label="Foto anterior">‹</button>
+      <button class="pj-arrow next" aria-label="Foto siguiente">›</button>
+    `;
+    const track = el.querySelector('.pj-track');
+
+    photos.forEach((src, i) => {
+      const slide = document.createElement('div');
+      slide.className = 'pj-slide';
+      slide.dataset.placeholder = placeholderText;
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `Foto ${i + 1}`;
+      img.loading = 'lazy';
+      img.onerror = () => slide.classList.add('is-missing');
+      slide.appendChild(img);
+      track.appendChild(slide);
+    });
+
+    const dotsWrap = document.createElement('div');
+    dotsWrap.className = 'pj-dots';
+    photos.forEach((_, i) => {
+      const dot = document.createElement('button');
+      dot.className = 'pj-dot';
+      dot.setAttribute('aria-label', `Ir a la foto ${i + 1}`);
+      dot.addEventListener('click', () => goTo(i));
+      dotsWrap.appendChild(dot);
+    });
+    el.insertAdjacentElement('afterend', dotsWrap);
+
+    const slides = track.querySelectorAll('.pj-slide');
+    const dots = dotsWrap.querySelectorAll('.pj-dot');
+
+    function render(){
+      slides.forEach((s, i) => s.classList.toggle('is-active', i === current));
+      dots.forEach((d, i) => d.classList.toggle('is-active', i === current));
+    }
+    function goTo(i){
+      current = (i + photos.length) % photos.length;
+      render();
+      restart();
+    }
+    function restart(){
+      clearInterval(timer);
+      timer = setInterval(() => goTo(current + 1), 5000);
+    }
+
+    el.querySelector('.pj-arrow.prev').addEventListener('click', () => goTo(current - 1));
+    el.querySelector('.pj-arrow.next').addEventListener('click', () => goTo(current + 1));
+
+    let touchX = null;
+    el.addEventListener('touchstart', e => { touchX = e.touches[0].clientX; clearInterval(timer); });
+    el.addEventListener('touchend', e => {
+      if (touchX === null) return;
+      const delta = e.changedTouches[0].clientX - touchX;
+      if (Math.abs(delta) > 40) goTo(current + (delta < 0 ? 1 : -1));
+      else restart();
+      touchX = null;
+    });
+    el.closest('.pj-frame-glow').addEventListener('mouseenter', () => clearInterval(timer));
+    el.closest('.pj-frame-glow').addEventListener('mouseleave', restart);
+
+    render();
+    restart();
+  }
+
+  initSlider('sliderNina', childhoodPhotos, 'Coloca aquí una foto de Edith de niña');
+  initSlider('sliderHoy', adultPhotos, 'Coloca aquí una foto reciente de Edith');
+
+  // Revela el texto central con un pequeño fundido al entrar en pantalla
+  const textCol = document.getElementById('textCol');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting){
+        textCol.classList.add('is-visible');
+        io.disconnect();
+      }
+    });
+  }, { threshold: .35 });
+  io.observe(textCol);
+</script>
+
+</body>
+</html>

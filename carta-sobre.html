@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Una carta para ti</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy-dark:#101c34;
+    --navy:#1b2c4f;
+    --navy-light:#2c4576;
+    --cream:#f3ecd8;
+    --line:#ddc9a3;
+    --blue:#96C6E0;
+    --pink:#FFC5D3;
+    --ink:#2b2a26;
+  }
+
+  *{ box-sizing:border-box; }
+
+  html,body{
+    height:100%;
+    margin:0;
+    background:radial-gradient(circle at 50% 20%, #fdf7f0, #eaf3f8 55%, #f7ecf1 100%);
+    font-family:'Cormorant Garamond', serif;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+
+  .stage{
+    position:relative;
+    width:min(92vw,420px);
+    height:min(82vh,580px);
+  }
+
+  .hint{
+    position:absolute;
+    left:50%;
+    bottom:-6%;
+    transform:translateX(-50%);
+    letter-spacing:.04em;
+    font-size:clamp(.85rem,2.2vw,1rem);
+    color:#7c8aa3;
+    transition:opacity .4s ease;
+    white-space:nowrap;
+  }
+  .stage.open .hint{ opacity:0; pointer-events:none; }
+
+  /* ---------- envelope ---------- */
+  .envelope{
+    position:absolute;
+    left:50%; top:50%;
+    width:86%; height:34%;
+    transform:translate(-50%,-50%);
+    perspective:1000px;
+    cursor:pointer;
+    transition:width 1s cubic-bezier(.65,.05,.3,1) .35s,
+               height 1s cubic-bezier(.65,.05,.3,1) .35s;
+    animation:idleFloat 3.4s ease-in-out infinite;
+  }
+  .envelope:focus-visible{ outline:3px solid var(--blue); outline-offset:6px; }
+  .stage.open .envelope{
+    width:100%; height:96%;
+    cursor:default;
+    animation:none;
+  }
+
+  @keyframes idleFloat{
+    0%,100%{ transform:translate(-50%,-50%) translateY(0); }
+    50%{ transform:translate(-50%,-50%) translateY(-3%); }
+  }
+
+  .env-body{
+    position:absolute; inset:0;
+    border-radius:4% / 6%;
+    background:linear-gradient(155deg,var(--navy-light),var(--navy-dark));
+    box-shadow:0 25px 45px -18px rgba(10,20,40,.55);
+  }
+
+  .env-flap{
+    position:absolute;
+    top:0; left:0; width:100%; height:62%;
+    clip-path:polygon(0 0,100% 0,50% 100%);
+    background:linear-gradient(200deg,var(--navy),var(--navy-dark));
+    transform-origin:top center;
+    transform-style:preserve-3d;
+    backface-visibility:hidden;
+    z-index:4;
+    transition:transform .9s cubic-bezier(.7,.05,.3,1) 0s,
+               z-index 0s .5s;
+  }
+  .stage.open .env-flap{
+    transform:rotateX(180deg);
+    z-index:1;
+    transition:transform .9s cubic-bezier(.7,.05,.3,1) .1s,
+               z-index 0s .15s;
+  }
+
+  .seal{
+    position:absolute;
+    top:60%; left:50%;
+    width:15%; aspect-ratio:1;
+    transform:translate(-50%,-50%);
+    z-index:5;
+    transition:transform .45s ease, opacity .4s ease;
+  }
+  .seal svg{ width:100%; height:100%; display:block; filter:drop-shadow(0 3px 4px rgba(0,0,0,.35)); }
+  .stage.open .seal{
+    transform:translate(-50%,-50%) scale(.25) rotate(35deg);
+    opacity:0;
+  }
+
+  /* ---------- letter ---------- */
+  .letter{
+    position:absolute;
+    left:12%; right:12%;
+    top:31%; bottom:47%;
+    z-index:2;
+    border-radius:3px;
+    overflow:hidden;
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+    transition:top 1s cubic-bezier(.6,.05,.25,1) .5s,
+               bottom 1s cubic-bezier(.6,.05,.25,1) .5s,
+               left .85s ease .5s,
+               right .85s ease .5s,
+               z-index 0s .3s;
+  }
+  .stage.open .letter{
+    left:5%; right:5%;
+    top:6%; bottom:6%;
+    z-index:6;
+  }
+
+  .letter-paper{
+    position:relative;
+    width:100%; height:100%;
+    background:
+      repeating-linear-gradient(var(--cream),var(--cream) calc(2em - 1px),var(--line) calc(2em - 1px),var(--line) 2em);
+    padding:8% 8% 6%;
+  }
+
+  .letter-text{
+    width:100%; height:100%;
+    overflow-y:auto;
+    font-family:'Caveat','Cormorant Garamond',cursive;
+    font-size:clamp(1.1rem,3.4vw,1.5rem);
+    line-height:2em;
+    color:#3a3222;
+    outline:none;
+    opacity:0;
+    transition:opacity .5s ease 1.35s;
+  }
+  .stage.open .letter-text{ opacity:1; }
+  .letter-text:empty:before{
+    content:attr(data-placeholder);
+    color:#a9997a;
+  }
+
+  .star{
+    position:absolute;
+    width:9%; aspect-ratio:1;
+    clip-path:polygon(50% 0%,63% 35%,100% 38%,72% 60%,82% 96%,50% 76%,18% 96%,28% 60%,0% 38%,37% 35%);
+    opacity:0;
+    transform:scale(.3) rotate(-15deg);
+    transition:opacity .5s ease 1.15s, transform .5s cubic-bezier(.4,1.6,.6,1) 1.15s;
+  }
+  .star.s1{ top:5%; left:6%; background:var(--blue); }
+  .star.s2{ top:4%; left:15%; width:6%; background:var(--navy); transform-origin:center; }
+  .star.s3{ bottom:6%; right:8%; background:var(--pink); }
+  .stage.open .star{ opacity:.9; transform:scale(1) rotate(-8deg); }
+
+  /* ---------- close button ---------- */
+  .close-btn{
+    position:absolute;
+    top:2%; right:2%;
+    width:36px; height:36px;
+    border-radius:50%;
+    border:none;
+    background:rgba(20,30,55,.75);
+    color:#f4efe2;
+    font-size:1.1rem;
+    line-height:1;
+    cursor:pointer;
+    z-index:9;
+    opacity:0;
+    pointer-events:none;
+    transition:opacity .4s ease 1.6s, transform .2s ease;
+  }
+  .stage.open .close-btn{ opacity:1; pointer-events:auto; }
+  .close-btn:hover{ transform:scale(1.08); }
+
+  @media (prefers-reduced-motion: reduce){
+    .envelope,.env-flap,.letter,.seal,.star,.close-btn,.letter-text{
+      transition-duration:.01ms !important;
+      animation:none !important;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="stage" id="stage">
+
+  <div class="envelope" id="envelope" tabindex="0" role="button"
+       aria-label="Abrir sobre para leer y escribir la carta">
+    <div class="env-body"></div>
+
+    <div class="letter">
+      <div class="letter-paper">
+        <span class="star s1"></span>
+        <span class="star s2"></span>
+        <span class="star s3"></span>
+        <div class="letter-text" id="letterText" contenteditable="false"
+             data-placeholder="Escribe aquí tu carta..."></div>
+      </div>
+    </div>
+
+    <div class="env-flap"></div>
+
+    <div class="seal">
+      <svg viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="46" fill="#d7dee6"/>
+        <circle cx="50" cy="50" r="46" fill="none" stroke="#aeb8c4" stroke-width="2"/>
+        <path d="M50 20 C 46 32, 34 34, 30 44 C 40 42, 46 46, 48 54
+                 C 44 62, 34 64, 32 74 C 44 70, 52 72, 56 80
+                 C 58 68, 66 64, 70 56 C 60 58, 54 52, 54 44
+                 C 62 40, 66 30, 62 22 C 56 30, 50 30, 50 20 Z"
+              fill="none" stroke="#8b96a5" stroke-width="1.6"/>
+      </svg>
+    </div>
+  </div>
+
+  <p class="hint" id="hint">toca el sobre para abrirlo</p>
+  <button class="close-btn" id="closeBtn" aria-label="Cerrar la carta">✕</button>
+</div>
+
+<script>
+  const stage = document.getElementById('stage');
+  const envelope = document.getElementById('envelope');
+  const closeBtn = document.getElementById('closeBtn');
+  const letterText = document.getElementById('letterText');
+
+  function openLetter(){
+    if (stage.classList.contains('open')) return;
+    stage.classList.add('open');
+    letterText.setAttribute('contenteditable', 'true');
+    setTimeout(() => letterText.focus(), 1450);
+  }
+
+  function closeLetter(){
+    stage.classList.remove('open');
+    letterText.blur();
+    letterText.setAttribute('contenteditable', 'false');
+  }
+
+  envelope.addEventListener('click', openLetter);
+  envelope.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' '){
+      e.preventDefault();
+      openLetter();
+    }
+  });
+
+  closeBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeLetter();
+  });
+</script>
+
+</body>
+</html>

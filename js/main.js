@@ -31,7 +31,7 @@ function initFloatingHearts() {
 
 /**
  * Controla la transición suave de los márgenes con textura vichy
- * al hacer scroll después de la sección de edad (21)
+ * al hacer scroll después del Hero hacia el contenido principal
  */
 function initSideFlanks() {
   const flanks = document.querySelectorAll('.side-flank');
@@ -42,8 +42,7 @@ function initSideFlanks() {
     const rect = target.getBoundingClientRect();
     const windowH = window.innerHeight;
 
-    // Transición suave: se activa gradualmente cuando el contenido posterior
-    // a la sección de edad se aproxima al viewport, sin mostrarse en el hero
+    // Transición suave al aproximarse el contenido flanqueado
     const startPoint = windowH * 0.85;
     const endPoint = windowH * 0.25;
     const progress = Math.min(Math.max((startPoint - rect.top) / (startPoint - endPoint), 0), 1);
@@ -59,13 +58,76 @@ function initSideFlanks() {
   updateFlanks();
 }
 
+/**
+ * Revela suavemente cada una de las zonas del sitio al hacer scroll
+ * con animaciones fluidas y transiciones armónicas entre etapas
+ */
+function initZoneTransitions() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const zones = document.querySelectorAll('.zone-stage');
+  if (!zones.length) return;
+
+  if (prefersReducedMotion) {
+    zones.forEach((zone) => zone.classList.add('is-revealed'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-revealed');
+      }
+    });
+  }, {
+    threshold: 0.08,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  zones.forEach((zone) => {
+    observer.observe(zone);
+  });
+}
+
+/**
+ * Observa y activa la animación de fade-in al scrollear
+ * para elementos clave del sitio (títulos, tarjetas, carruseles, pastel)
+ */
+function initScrollFadeIn() {
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const elements = document.querySelectorAll('.reveal-on-scroll, .photo-card, .zone-divider');
+  if (!elements.length) return;
+
+  if (prefersReducedMotion) {
+    elements.forEach(el => el.classList.add('is-inview'));
+    return;
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('is-inview');
+      }
+    });
+  }, {
+    threshold: 0.1,
+    rootMargin: '0px 0px -40px 0px'
+  });
+
+  elements.forEach(el => observer.observe(el));
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   // Inicializar componentes del sitio
   initEnvelope();
+  if (typeof initGrowthSliders === 'function') {
+    initGrowthSliders();
+  }
   initGallery();
   initCakeSprinkles();
   initCandles();
   initSideFlanks();
+  initZoneTransitions();
+  initScrollFadeIn();
 
   // Iniciar pantalla de carga; al finalizar se activan partículas de fondo y corazones
   initLoader(() => {

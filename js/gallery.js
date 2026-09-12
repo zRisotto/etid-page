@@ -16,7 +16,13 @@ function initGallery() {
     ['#F0B860', '#FFC5D3'],
     ['#FFC5D3', '#d9a7ff'],
     ['#96C6E0', '#FFC5D3'],
-    ['#d9a7ff', '#96C6E0']
+    ['#d9a7ff', '#96C6E0'],
+    ['#FFC5D3', '#F0B860'],
+    ['#96C6E0', '#a1e5d5'],
+    ['#a1e5d5', '#FFC5D3'],
+    ['#F0B860', '#96C6E0'],
+    ['#d9a7ff', '#FFC5D3'],
+    ['#96C6E0', '#d9a7ff']
   ];
 
   const defaultCaptions = [
@@ -25,7 +31,13 @@ function initGallery() {
     'Momentos que se quedan para siempre',
     'Una risa inolvidable',
     'Un día cualquiera, hecho especial',
-    'Este año, y muchos más'
+    'Este año, y muchos más',
+    'Tus abrazos sinceros que reconfortan el alma',
+    'Cada plática contigo donde las horas se pasan volando',
+    'Esa chispa en tus ojos cuando hablas de lo que amas',
+    'Cómplices en las risas, anécdotas y en todo lo bonito',
+    'Tu ternura y esa luz tan linda que siempre transmites',
+    'Por todas las historias increíbles que nos faltan por vivir'
   ];
 
   const items = (window.BIRTHDAY_CONFIG && Array.isArray(window.BIRTHDAY_CONFIG.gallery))
@@ -41,10 +53,11 @@ function initGallery() {
 
   items.forEach((item, i) => {
     const card = document.createElement('div');
-    card.className = 'photo-card';
+    card.className = 'photo-card reveal-item';
     card.tabIndex = 0;
     card.setAttribute('role', 'button');
     card.setAttribute('aria-label', `Ver recuerdo ${i + 1}: ${item.caption || item.label || ''}`);
+    card.style.setProperty('--card-index', i);
 
     const pair = item.colors || defaultPalettes[i % defaultPalettes.length];
     const hasImage = Boolean(item.image && item.image.trim() !== '');
