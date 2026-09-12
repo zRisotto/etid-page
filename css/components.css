@@ -68,9 +68,9 @@ section {
   align-items: center;
   justify-content: center;
   text-align: center;
-  padding-top: 5rem;
-  padding-bottom: 5rem;
-  gap: 1.6rem;
+  padding-top: clamp(2.5rem, 5vh, 4.5rem);
+  padding-bottom: clamp(2.5rem, 5vh, 4.5rem);
+  gap: clamp(0.9rem, 2vh, 1.4rem);
 }
 
 /* Imagen central principal de Edith */
@@ -113,11 +113,28 @@ section {
 }
 
 .hero-title {
-  font-size: clamp(2.4rem, 8vw, 4.6rem);
-  line-height: 1.05;
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  line-height: 1.15;
   color: var(--ink);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  margin: 0.15rem 0;
+  position: relative;
+  z-index: 10;
+  max-width: 100%;
 }
 
+.hero-greeting {
+  display: block;
+  font-family: inherit;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+/* Fallback o legado */
 .hero-name {
   display: block;
   font-style: italic;
@@ -127,6 +144,188 @@ section {
   background-clip: text;
   color: transparent;
   margin-top: .15em;
+}
+
+/* Sticker de Nombre Interactivo */
+.hero-name-sticker-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: none;
+  padding: 0.3rem 0.6rem;
+  margin: 0.2rem auto;
+  cursor: pointer;
+  outline: none;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transform: rotate(-2.5deg);
+  transition: transform 0.28s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  will-change: transform;
+  isolation: isolate;
+  z-index: 12;
+}
+
+.hero-name-sticker-btn:focus-visible {
+  outline: 2px dashed var(--pink);
+  outline-offset: 6px;
+  border-radius: 14px;
+}
+
+.hero-name-sticker-btn:hover {
+  transform: rotate(1.2deg) scale(1.05) translateY(-3px);
+}
+
+.hero-name-sticker-btn:active,
+.hero-name-sticker-btn.is-clicking {
+  transform: rotate(-1deg) scale(0.93);
+  transition: transform 0.08s ease;
+}
+
+.hero-name-sticker-img {
+  width: clamp(200px, 30vw, 320px);
+  height: auto;
+  max-height: 105px;
+  aspect-ratio: 3.1 / 1;
+  object-fit: contain;
+  display: block;
+  pointer-events: auto;
+  user-select: none;
+  -webkit-user-drag: none;
+  /* Efecto Pegatina / Sticker Físico: contorno troquelado blanco y sombra volumétrica */
+  filter: drop-shadow(0 0 1.5px #ffffff)
+          drop-shadow(0 0 3px #ffffff)
+          drop-shadow(0 0 5.5px #ffffff)
+          drop-shadow(0 8px 18px rgba(25, 15, 35, 0.22));
+  transition: filter 0.25s ease, transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-name-sticker-btn:hover .hero-name-sticker-img {
+  filter: drop-shadow(0 0 2px #ffffff)
+          drop-shadow(0 0 4px #ffffff)
+          drop-shadow(0 0 7.5px #ffffff)
+          drop-shadow(0 14px 26px rgba(25, 15, 35, 0.32));
+}
+
+/* Animación elástica de Pop al cambiar de sticker */
+.hero-name-sticker-btn.is-popping .hero-name-sticker-img {
+  animation: stickerNamePop 0.42s cubic-bezier(0.175, 0.885, 0.32, 1.35) forwards;
+}
+
+@keyframes stickerNamePop {
+  0% {
+    transform: scale(0.9) rotate(-2.5deg);
+    opacity: 0.88;
+  }
+  45% {
+    transform: scale(1.15) rotate(3deg);
+    opacity: 1;
+  }
+  75% {
+    transform: scale(0.98) rotate(-0.5deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+/* Mini etiqueta invitando a tocar el sticker */
+.hero-name-sticker-hint {
+  position: absolute;
+  bottom: -0.65rem;
+  right: -0.4rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  color: #fff;
+  background: linear-gradient(135deg, var(--pink), var(--blue));
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
+  box-shadow: 0 3px 8px rgba(var(--pink-rgb), 0.35);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  transform: rotate(4deg);
+  animation: hintPulse 2.8s ease-in-out infinite;
+  opacity: 0.95;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.hero-name-sticker-btn:hover .hero-name-sticker-hint {
+  transform: rotate(0deg) scale(1.08);
+}
+
+.hero-name-sticker-btn.has-interacted .hero-name-sticker-hint {
+  opacity: 0;
+  transform: scale(0.7);
+  pointer-events: none;
+}
+
+@keyframes hintPulse {
+  0%, 100% {
+    transform: rotate(4deg) scale(1);
+  }
+  50% {
+    transform: rotate(2deg) scale(1.06);
+  }
+}
+
+/* Partículas mágicas de confeti/chispas al hacer clic */
+.hero-name-sparkle {
+  position: absolute;
+  pointer-events: none;
+  font-size: 0.85rem;
+  user-select: none;
+  animation: sparkleFly 0.55s ease-out forwards;
+  z-index: 20;
+}
+
+@keyframes sparkleFly {
+  0% {
+    opacity: 1;
+    transform: translate(0, 0) scale(0.4) rotate(0deg);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--dx), var(--dy)) scale(1.2) rotate(var(--drot));
+  }
+}
+
+@media (max-width: 900px) {
+  .hero-name-sticker-img {
+    width: clamp(180px, 38vw, 260px);
+    max-height: 90px;
+  }
+}
+
+@media (max-width: 640px) {
+  .hero {
+    gap: 0.8rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  .hero-img {
+    max-height: 200px;
+  }
+  .hero-title {
+    gap: 0.45rem;
+  }
+  .hero-name-sticker-btn {
+    padding: 0.15rem 0.35rem;
+    margin: 0.1rem auto;
+  }
+  .hero-name-sticker-img {
+    width: clamp(155px, 50vw, 215px);
+    max-height: 72px;
+  }
+  .hero-name-sticker-hint {
+    bottom: -0.45rem;
+    right: -0.2rem;
+    font-size: 0.65rem;
+    padding: 0.1rem 0.45rem;
+  }
 }
 
 .hero-sub {

@@ -173,6 +173,136 @@
     }, true);
   }
 
+  /* ============================================================
+   * STICKER DE NOMBRE INTERACTIVO (Edith -> Etid -> etad -> etud)
+   * ============================================================ */
+  const NAME_STICKERS = [
+    { name: 'Edith', src: 'assets/nombres edith/Edith.png' },
+    { name: 'Etid',  src: 'assets/nombres edith/Etid.png' },
+    { name: 'etad',  src: 'assets/nombres edith/etad.png' },
+    { name: 'etud',  src: 'assets/nombres edith/etud.png' }
+  ];
+
+  let currentNameIndex = 0;
+
+  /**
+   * Sonido sutil sintetizado tipo pop/burbuja usando Web Audio API
+   */
+  function playPopChirp() {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      const osc = ctx.createOscillator();
+      const gain = ctx.createGain();
+
+      osc.type = 'sine';
+      const now = ctx.currentTime;
+      osc.frequency.setValueAtTime(450, now);
+      osc.frequency.exponentialRampToValueAtTime(780, now + 0.07);
+
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+
+      osc.connect(gain);
+      gain.connect(ctx.destination);
+
+      osc.start(now);
+      osc.stop(now + 0.13);
+    } catch (e) {
+      // Ignorar si el navegador restringe audio
+    }
+  }
+
+  /**
+   * Genera chispas/estrellas mágicas temporales alrededor del sticker de nombre
+   */
+  function spawnNameSparkles(button) {
+    if (!button) return;
+    const emojis = ['✨', '💖', '⭐', '🌸', '💫'];
+    const count = 6;
+
+    for (let i = 0; i < count; i++) {
+      const sparkle = document.createElement('span');
+      sparkle.className = 'hero-name-sparkle';
+      sparkle.textContent = emojis[i % emojis.length];
+
+      const angle = (i / count) * 2 * Math.PI + (Math.random() * 0.4 - 0.2);
+      const distance = 42 + Math.random() * 32;
+      const dx = Math.cos(angle) * distance;
+      const dy = Math.sin(angle) * distance;
+      const drot = `${Math.floor(Math.random() * 60 - 30)}deg`;
+
+      sparkle.style.setProperty('--dx', `${dx.toFixed(1)}px`);
+      sparkle.style.setProperty('--dy', `${dy.toFixed(1)}px`);
+      sparkle.style.setProperty('--drot', drot);
+      sparkle.style.left = '50%';
+      sparkle.style.top = '50%';
+
+      button.appendChild(sparkle);
+
+      setTimeout(() => {
+        sparkle.remove();
+      }, 580);
+    }
+  }
+
+  /**
+   * Cicla secuencialmente los nombres: Edith -> Etid -> etad -> etud -> Edith
+   */
+  function cycleNameSticker() {
+    const btn = document.getElementById('heroNameStickerBtn');
+    const img = document.getElementById('heroNameStickerImg');
+    if (!btn || !img) return;
+
+    btn.classList.add('has-interacted');
+    currentNameIndex = (currentNameIndex + 1) % NAME_STICKERS.length;
+    const nextItem = NAME_STICKERS[currentNameIndex];
+
+    // Reiniciar animación elástica
+    btn.classList.remove('is-popping');
+    void btn.offsetWidth;
+    btn.classList.add('is-popping');
+
+    // Actualizar imagen y atributos de accesibilidad
+    img.src = nextItem.src;
+    img.alt = nextItem.name;
+    btn.setAttribute('aria-label', `Nombre: ${nextItem.name}. Toca para cambiar nombre`);
+
+    playPopChirp();
+    spawnNameSparkles(btn);
+
+    setTimeout(() => {
+      btn.classList.remove('is-popping');
+    }, 440);
+  }
+
+  /**
+   * Inicializa el sticker de nombre en el Hero
+   */
+  function initHeroNameSticker() {
+    const btn = document.getElementById('heroNameStickerBtn');
+    if (!btn) return;
+
+    // Precargar todas las imágenes para cambio instantáneo
+    NAME_STICKERS.forEach((item) => {
+      const preloadImg = new Image();
+      preloadImg.src = item.src;
+    });
+
+    btn.addEventListener('click', function (e) {
+      e.stopPropagation();
+      cycleNameSticker();
+    });
+
+    btn.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        cycleNameSticker();
+      }
+    });
+  }
+
   /**
    * Inicialización de eventos en los stickers
    */
@@ -194,6 +324,7 @@
       });
     });
 
+    initHeroNameSticker();
     preloadAudioAssets();
     setupTransparentPixelHitDetection();
   }
@@ -209,5 +340,7 @@
   window.StickerCollage = {
     playSound: playStickerSound,
     preload: preloadAudioAssets,
+    cycleHeroName: cycleNameSticker,
+    NAME_STICKERS: NAME_STICKERS
   };
 })();
