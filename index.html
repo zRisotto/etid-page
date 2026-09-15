@@ -121,6 +121,94 @@
 
       <!-- 2. CARTA / SOBRE INTERACTIVO -->
       <section class="letter-section zone-stage" id="letter">
+
+        <!-- Collage decorativo plano en los márgenes de Section 2 (La Carta) -->
+        <div class="letter-collage" aria-label="Collage decorativo en márgenes de la carta">
+
+          <!-- Margen lateral izquierdo (en desorden, dentro del margen) -->
+          <div class="letter-collage-margin letter-collage-margin--left">
+            <!-- 1. Yo (Esquina superior izquierda, no interactivo, sin salir de la sección) -->
+            <div class="collage-item collage-item--yo-corner" title="Recuerdo especial">
+              <img src="assets/collage section carta/yo left upper corner.jpg" alt="Foto recuerdo" class="collage-img collage-img--flat-photo" loading="lazy">
+            </div>
+
+            <!-- 2. Estrella verde (Acento flotante) -->
+            <div class="collage-item collage-item--star" aria-hidden="true">
+              <img src="assets/collage section carta/star green.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 3. Te amo -->
+            <div class="collage-item collage-item--te-amo" aria-hidden="true">
+              <img src="assets/collage section carta/te amo.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 4. Cute dibujo nosotros -->
+            <div class="collage-item collage-item--cute-us" aria-hidden="true">
+              <img src="assets/collage section carta/cute dibujo us.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 5. Búho tierno -->
+            <div class="collage-item collage-item--owl" aria-hidden="true">
+              <img src="assets/collage section carta/owl.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 6. Persona 3 Disk -->
+            <div class="collage-item collage-item--persona-disk" aria-hidden="true">
+              <img src="assets/collage section carta/persona  3disk.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 7. Flores (Esquina inferior izquierda) -->
+            <div class="collage-item collage-item--flowers" aria-hidden="true">
+              <img src="assets/collage section carta/flowers.png" alt="" class="collage-img" loading="lazy">
+            </div>
+          </div>
+
+          <!-- Margen lateral derecho (en desorden, dentro del margen) -->
+          <div class="letter-collage-margin letter-collage-margin--right">
+            <!-- 8. Ella (Esquina superior derecha, foto plana) -->
+            <div class="collage-item collage-item--ella-corner" title="Edith">
+              <img src="assets/collage section carta/ella right lower corner.jpg" alt="Foto Edith" class="collage-img collage-img--flat-photo" loading="lazy">
+            </div>
+
+            <!-- 9. Mariposas (Acento flotante) -->
+            <div class="collage-item collage-item--mariposas" aria-hidden="true">
+              <img src="assets/collage section carta/mariposas.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 10. Happy Birthday -->
+            <div class="collage-item collage-item--happy-bday" aria-hidden="true">
+              <img src="assets/collage section carta/happy bday.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 11. Pastel interactivo (Cake Dots) [Único elemento interactivo con efecto al clickear] -->
+            <button type="button" class="collage-item collage-item--cake" id="collageCakeBtn" aria-label="Pastel de cumpleaños: ¡haz clic para una sorpresa!" title="¡Toca el pastel!">
+              <img src="assets/collage section carta/cake dots.png" alt="Pastel decorativo" class="collage-img" draggable="false">
+              <span class="collage-cake-badge" aria-hidden="true">✨ ¡Tócame!</span>
+            </button>
+
+            <!-- 12. Signo de exclamación -->
+            <div class="collage-item collage-item--exclamation" aria-hidden="true">
+              <img src="assets/collage section carta/!.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 13. Sylvanian -->
+            <div class="collage-item collage-item--sylvanian" aria-hidden="true">
+              <img src="assets/collage section carta/sylvanian.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 14. 2026 -->
+            <div class="collage-item collage-item--year" aria-hidden="true">
+              <img src="assets/collage section carta/2026.png" alt="" class="collage-img" loading="lazy">
+            </div>
+
+            <!-- 15. Globos de cumpleaños (Esquina inferior derecha, invade la sección inferior) -->
+            <div class="collage-item collage-item--balloons" aria-hidden="true">
+              <img src="assets/collage section carta/baloons bday.png" alt="" class="collage-img" loading="lazy">
+            </div>
+          </div>
+
+        </div>
+
         <div class="wrap envelope-wrap">
           <div class="section-head reveal-on-scroll">
             <h2>Un mensaje para ti</h2>
@@ -251,15 +339,39 @@
 
           <div class="cake-scene reveal-on-scroll">
             <div class="cake-watermark" aria-hidden="true">21</div>
-            <div class="cake-candles" id="cake-candles">
-              <div class="candle"><div class="flame" tabindex="0" role="button" aria-label="Apagar vela 1"></div></div>
-              <div class="candle"><div class="flame" tabindex="0" role="button" aria-label="Apagar vela 2"></div></div>
+            <div class="cake-candles" id="cake-candles" aria-label="21 velas de cumpleaños">
+              <div class="candles-row candles-row--back">
+                <div class="candle candle--pink" tabindex="0" role="button" aria-label="Apagar vela 1"><div class="flame"></div></div>
+                <div class="candle candle--blue" tabindex="0" role="button" aria-label="Apagar vela 2"><div class="flame"></div></div>
+                <div class="candle candle--gold" tabindex="0" role="button" aria-label="Apagar vela 3"><div class="flame"></div></div>
+                <div class="candle candle--lilac" tabindex="0" role="button" aria-label="Apagar vela 4"><div class="flame"></div></div>
+                <div class="candle candle--mint" tabindex="0" role="button" aria-label="Apagar vela 5"><div class="flame"></div></div>
+                <div class="candle candle--pink" tabindex="0" role="button" aria-label="Apagar vela 6"><div class="flame"></div></div>
+                <div class="candle candle--blue" tabindex="0" role="button" aria-label="Apagar vela 7"><div class="flame"></div></div>
+                <div class="candle candle--gold" tabindex="0" role="button" aria-label="Apagar vela 8"><div class="flame"></div></div>
+                <div class="candle candle--lilac" tabindex="0" role="button" aria-label="Apagar vela 9"><div class="flame"></div></div>
+                <div class="candle candle--mint" tabindex="0" role="button" aria-label="Apagar vela 10"><div class="flame"></div></div>
+                <div class="candle candle--pink" tabindex="0" role="button" aria-label="Apagar vela 11"><div class="flame"></div></div>
+              </div>
+              <div class="candles-row candles-row--front">
+                <div class="candle candle--blue" tabindex="0" role="button" aria-label="Apagar vela 12"><div class="flame"></div></div>
+                <div class="candle candle--gold" tabindex="0" role="button" aria-label="Apagar vela 13"><div class="flame"></div></div>
+                <div class="candle candle--lilac" tabindex="0" role="button" aria-label="Apagar vela 14"><div class="flame"></div></div>
+                <div class="candle candle--mint" tabindex="0" role="button" aria-label="Apagar vela 15"><div class="flame"></div></div>
+                <div class="candle candle--pink" tabindex="0" role="button" aria-label="Apagar vela 16"><div class="flame"></div></div>
+                <div class="candle candle--blue" tabindex="0" role="button" aria-label="Apagar vela 17"><div class="flame"></div></div>
+                <div class="candle candle--gold" tabindex="0" role="button" aria-label="Apagar vela 18"><div class="flame"></div></div>
+                <div class="candle candle--lilac" tabindex="0" role="button" aria-label="Apagar vela 19"><div class="flame"></div></div>
+                <div class="candle candle--mint" tabindex="0" role="button" aria-label="Apagar vela 20"><div class="flame"></div></div>
+                <div class="candle candle--gold" tabindex="0" role="button" aria-label="Apagar vela 21"><div class="flame"></div></div>
+              </div>
             </div>
             <div class="cake-body" id="cake-body">
+              <div class="cake-frosting" aria-hidden="true"></div>
               <div class="cake-tier"></div>
             </div>
           </div>
-          <p class="wish-hint" id="wish-hint">Faltan 2 velas por apagar</p>
+          <p class="wish-hint" id="wish-hint">Faltan 21 velas por apagar</p>
 
           <div class="wish-message" id="wish-message">
             <p>¡Feliz cumpleaños número 21, Edith! Que este nuevo año esté lleno de todo lo que te hace brillar. 🎉💙</p>

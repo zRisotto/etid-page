@@ -39,6 +39,7 @@
     margin:0 auto;
     position:relative;
     z-index:1;
+    transition:max-width .3s ease;
   }
   @media (max-width:900px){
     .pj-grid{ grid-template-columns:1fr; justify-items:center; }
@@ -47,23 +48,86 @@
     .pj-slider-col.pj-right{ order:3; }
   }
 
+  /* Pantallas medianas y laptops (desde 901px) */
+  @media (min-width:901px){
+    .pj-grid{
+      max-width:1300px;
+      grid-template-columns:1fr minmax(280px,360px) 1fr;
+      gap:clamp(28px,3vw,48px);
+    }
+  }
+
+  /* Pantallas grandes de escritorio y laptops estándar (desde 1200px) */
+  @media (min-width:1200px){
+    .pj-grid{
+      max-width:1480px;
+      grid-template-columns:1fr minmax(300px,380px) 1fr;
+      gap:clamp(34px,3.8vw,58px);
+    }
+  }
+
+  /* Monitores de alta resolución y pantallas amplias (desde 1536px) */
+  @media (min-width:1536px){
+    .pj-grid{
+      max-width:1640px;
+      grid-template-columns:1fr minmax(320px,420px) 1fr;
+      gap:64px;
+    }
+  }
+
   /* ---------- sliders ---------- */
   .pj-slider-col{ width:100%; display:flex; justify-content:center; }
 
   .pj-frame-glow{
     position:relative;
-    width:100%; max-width:380px;
+    width:100%; max-width:340px;
+    transition:max-width .3s cubic-bezier(.2,.8,.2,1);
   }
+
+  /* Escalado para laptop y escritorio de ambos marcos de fotos */
+  @media (min-width:901px){
+    .pj-frame-glow{
+      max-width:min(420px, 54vh);
+    }
+  }
+
+  @media (min-width:1200px){
+    .pj-frame-glow{
+      max-width:min(480px, 58vh);
+    }
+  }
+
+  @media (min-width:1536px){
+    .pj-frame-glow{
+      max-width:min(530px, 60vh);
+    }
+  }
+
   .pj-frame-glow::before{
     content:'';
-    position:absolute; inset:-22px;
+    position:absolute; inset:-20px;
     background:linear-gradient(135deg,var(--pink),var(--blue));
-    filter:blur(34px);
+    filter:blur(30px);
     opacity:.5;
     z-index:0;
     border-radius:50%;
-    transition:opacity .5s ease;
+    transition:opacity .5s ease, inset .3s ease, filter .3s ease;
   }
+
+  @media (min-width:901px){
+    .pj-frame-glow::before{
+      inset:-26px;
+      filter:blur(36px);
+    }
+  }
+
+  @media (min-width:1200px){
+    .pj-frame-glow::before{
+      inset:-30px;
+      filter:blur(42px);
+    }
+  }
+
   .pj-frame-glow:hover::before{ opacity:.75; }
 
   .pj-frame{
@@ -128,7 +192,7 @@
   .pj-arrow.next{ right:12px; }
 
   .pj-dots{
-    display:flex; align-items:center; gap:8px;
+    display:flex; align-items:center; justify-content:center; gap:8px;
     margin-top:16px;
   }
   .pj-dot{
@@ -137,6 +201,27 @@
     border:1.5px solid rgba(52,50,74,.25);
     padding:0; cursor:pointer;
     transition:all .4s cubic-bezier(.4,0,.2,1);
+  }
+
+  @media (min-width:901px){
+    .pj-arrow{
+      width:44px;
+      height:44px;
+      font-size:1.45rem;
+    }
+    .pj-arrow.prev{ left:16px; }
+    .pj-arrow.next{ right:16px; }
+    .pj-dots{
+      gap:10px;
+      margin-top:18px;
+    }
+    .pj-dot{
+      width:9px;
+      height:9px;
+    }
+    .pj-dot.is-active{
+      width:30px;
+    }
   }
   .pj-dot:hover{ border-color:var(--blue); }
   .pj-dot.is-active{
@@ -260,19 +345,19 @@
     todavía, el slide muestra un panel de aviso en vez de romperse.
   */
   const childhoodPhotos = [
-    'fotos/edith-nina-1.jpg',
-    'fotos/edith-nina-2.jpg',
-    'fotos/edith-nina-3.jpg',
-    'fotos/edith-nina-4.jpg',
-    'fotos/edith-nina-5.jpg'
+    'assets/edith chiquia/1.jpg',
+    'assets/edith chiquia/2.jpg',
+    'assets/edith chiquia/3.jpg',
+    'assets/edith chiquia/4.jpg',
+    'assets/edith chiquia/5.jpg'
   ];
 
   const adultPhotos = [
-    'fotos/edith-hoy-1.jpg',
-    'fotos/edith-hoy-2.jpg',
-    'fotos/edith-hoy-3.jpg',
-    'fotos/edith-hoy-4.jpg',
-    'fotos/edith-hoy-5.jpg'
+    'assets/edith grande/1.jpg',
+    'assets/edith grande/2.jpg',
+    'assets/edith grande/3.jpg',
+    'assets/edith grande/4.jpg',
+    'assets/edith grande/5.jpg'
   ];
 
   function initSlider(containerId, photos, placeholderText){

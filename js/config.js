@@ -11,23 +11,22 @@ window.BIRTHDAY_CONFIG = {
   name: "Edith",
   age: 21,
 
-  // Fotos para el deslizador "Edith de niña"
-  // Coloca tus fotos en la carpeta fotos/ (por ejemplo: fotos/edith-nina-1.jpg)
+  // Fotos para el deslizador "Edith de niña" (izquierda)
   childhoodPhotos: [
-    'fotos/edith-nina-1.jpg',
-    'fotos/edith-nina-2.jpg',
-    'fotos/edith-nina-3.jpg',
-    'fotos/edith-nina-4.jpg',
-    'fotos/edith-nina-5.jpg'
+    'assets/edith chiquia/1.jpg',
+    'assets/edith chiquia/2.jpg',
+    'assets/edith chiquia/3.jpg',
+    'assets/edith chiquia/4.jpg',
+    'assets/edith chiquia/5.jpg'
   ],
 
-  // Fotos para el deslizador "Edith hoy"
+  // Fotos para el deslizador "Edith hoy" (derecha)
   adultPhotos: [
-    'fotos/edith-hoy-1.jpg',
-    'fotos/edith-hoy-2.jpg',
-    'fotos/edith-hoy-3.jpg',
-    'fotos/edith-hoy-4.jpg',
-    'fotos/edith-hoy-5.jpg'
+    'assets/edith grande/1.jpg',
+    'assets/edith grande/2.jpg',
+    'assets/edith grande/3.jpg',
+    'assets/edith grande/4.jpg',
+    'assets/edith grande/5.jpg'
   ],
 
   // Galería de tarjetas con recuerdos y dedicatorias

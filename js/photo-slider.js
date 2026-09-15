@@ -105,19 +105,19 @@ function createSlider(containerId, photos, placeholderText) {
 
 function initGrowthSliders() {
   const defaultChildhood = [
-    'fotos/edith-nina-1.jpg',
-    'fotos/edith-nina-2.jpg',
-    'fotos/edith-nina-3.jpg',
-    'fotos/edith-nina-4.jpg',
-    'fotos/edith-nina-5.jpg'
+    'assets/edith chiquia/1.jpg',
+    'assets/edith chiquia/2.jpg',
+    'assets/edith chiquia/3.jpg',
+    'assets/edith chiquia/4.jpg',
+    'assets/edith chiquia/5.jpg'
   ];
 
   const defaultAdult = [
-    'fotos/edith-hoy-1.jpg',
-    'fotos/edith-hoy-2.jpg',
-    'fotos/edith-hoy-3.jpg',
-    'fotos/edith-hoy-4.jpg',
-    'fotos/edith-hoy-5.jpg'
+    'assets/edith grande/1.jpg',
+    'assets/edith grande/2.jpg',
+    'assets/edith grande/3.jpg',
+    'assets/edith grande/4.jpg',
+    'assets/edith grande/5.jpg'
   ];
 
   const cfg = window.BIRTHDAY_CONFIG || {};
