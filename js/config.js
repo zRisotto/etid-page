@@ -71,26 +71,6 @@ window.BIRTHDAY_CONFIG = {
       label: "Recuerdo 8",
       colors: ["#96C6E0", "#a1e5d5"],
       caption: "Cada plática contigo donde las horas se pasan volando"
-    },
-    {
-      label: "Recuerdo 9",
-      colors: ["#a1e5d5", "#FFC5D3"],
-      caption: "Esa chispa en tus ojos cuando hablas de lo que amas"
-    },
-    {
-      label: "Recuerdo 10",
-      colors: ["#F0B860", "#96C6E0"],
-      caption: "Cómplices en las risas, anécdotas y en todo lo bonito"
-    },
-    {
-      label: "Recuerdo 11",
-      colors: ["#d9a7ff", "#FFC5D3"],
-      caption: "Tu ternura y esa luz tan linda que siempre transmites"
-    },
-    {
-      label: "Recuerdo 12",
-      colors: ["#96C6E0", "#d9a7ff"],
-      caption: "Por todas las historias increíbles que nos faltan por vivir"
     }
   ]
 };

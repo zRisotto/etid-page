@@ -18,11 +18,7 @@ function initGallery() {
     ['#96C6E0', '#FFC5D3'],
     ['#d9a7ff', '#96C6E0'],
     ['#FFC5D3', '#F0B860'],
-    ['#96C6E0', '#a1e5d5'],
-    ['#a1e5d5', '#FFC5D3'],
-    ['#F0B860', '#96C6E0'],
-    ['#d9a7ff', '#FFC5D3'],
-    ['#96C6E0', '#d9a7ff']
+    ['#96C6E0', '#a1e5d5']
   ];
 
   const defaultCaptions = [
@@ -33,11 +29,7 @@ function initGallery() {
     'Un día cualquiera, hecho especial',
     'Este año, y muchos más',
     'Tus abrazos sinceros que reconfortan el alma',
-    'Cada plática contigo donde las horas se pasan volando',
-    'Esa chispa en tus ojos cuando hablas de lo que amas',
-    'Cómplices en las risas, anécdotas y en todo lo bonito',
-    'Tu ternura y esa luz tan linda que siempre transmites',
-    'Por todas las historias increíbles que nos faltan por vivir'
+    'Cada plática contigo donde las horas se pasan volando'
   ];
 
   const items = (window.BIRTHDAY_CONFIG && Array.isArray(window.BIRTHDAY_CONFIG.gallery))
