@@ -24,7 +24,10 @@
       <div class="loading-number" id="loading-number">0</div>
       <p class="loading-label" id="loading-label">Preparando tu sorpresa…</p>
       <p class="loading-sub">21 razones para celebrar hoy</p>
-      <button type="button" class="enter-btn" id="enter-btn">Toca para entrar ✨</button>
+      <button type="button" class="enter-btn enter-btn--icon" id="enter-btn" aria-label="Entrar a tu sorpresa">
+        <span class="enter-btn-glow" aria-hidden="true"></span>
+        <span class="enter-icon" aria-hidden="true">✨</span>
+      </button>
       <button type="button" class="skip-btn" id="skip-btn">Saltar</button>
     </div>
   </div>
@@ -39,6 +42,11 @@
 
     <!-- 1. HERO (Sección principal con stickers decorativos) -->
     <section class="hero" id="hero">
+
+      <!-- Contenedor de efectos y confeti ambiental exclusivo del Hero -->
+      <div class="hero-fx-container" id="hero-fx-container" aria-hidden="true">
+        <canvas id="hero-ambient-canvas" class="hero-ambient-canvas"></canvas>
+      </div>
 
       <!-- ============================================================
            MÁRGENES LATERALES INTERACTIVOS (COLLAGE DE STICKERS EN HERO)
@@ -94,14 +102,15 @@
       </aside>
 
       <div class="hero-image-wrap">
+        <div class="hero-surprise-aura" aria-hidden="true"></div>
         <img src="assets/mainetid.png" alt="Edith de pequeña" class="hero-img">
       </div>
+      <span class="hero-surprise-badge" aria-hidden="true">✨ ¡Feliz Cumpleaños! ✨</span>
       <span class="hero-heart" aria-hidden="true">♡</span>
       <h1 class="hero-title">
         <span class="hero-greeting">Feliz cumpleaños</span>
-        <button type="button" class="hero-name-sticker-btn" id="heroNameStickerBtn" aria-label="Nombre: Edith. Toca para cambiar nombre" title="¡Haz clic para cambiar el nombre!">
+        <button type="button" class="hero-name-sticker-btn" id="heroNameStickerBtn" aria-label="Nombre: Edith" title="Edith ✨">
           <img src="assets/nombres edith/Edith.png" alt="Edith" id="heroNameStickerImg" class="hero-name-sticker-img" draggable="false" />
-          <span class="hero-name-sticker-hint" aria-hidden="true">✨ ¡Tócame!</span>
         </button>
       </h1>
       <p class="hero-sub">Hoy el mundo tiene un motivo más para sonreír.</p>
@@ -181,9 +190,8 @@
             </div>
 
             <!-- 11. Pastel interactivo (Cake Dots) [Único elemento interactivo con efecto al clickear] -->
-            <button type="button" class="collage-item collage-item--cake" id="collageCakeBtn" aria-label="Pastel de cumpleaños: ¡haz clic para una sorpresa!" title="¡Toca el pastel!">
+            <button type="button" class="collage-item collage-item--cake" id="collageCakeBtn" aria-label="Pastel de cumpleaños" title="Pastel de cumpleaños ✨">
               <img src="assets/collage section carta/cake dots.png" alt="Pastel decorativo" class="collage-img" draggable="false">
-              <span class="collage-cake-badge" aria-hidden="true">✨ ¡Tócame!</span>
             </button>
 
             <!-- 12. Signo de exclamación -->
@@ -212,7 +220,7 @@
         <div class="wrap envelope-wrap">
           <div class="section-head reveal-on-scroll">
             <h2>Un mensaje para ti</h2>
-            <p>Toca el sobre para abrirlo</p>
+            <p>Una carta para ti</p>
           </div>
 
           <div class="envelope-scene reveal-on-scroll" id="envelopeScene">
@@ -249,7 +257,7 @@
               </div>
             </div>
 
-            <p class="letter-hint" id="envelope-hint">Toca el sobre para abrirlo</p>
+            <p class="letter-hint" id="envelope-hint">Abre el sobre</p>
             <button class="close-btn" id="closeBtn" type="button" aria-label="Cerrar la carta">✕</button>
           </div>
         </div>
@@ -313,9 +321,22 @@
         <div class="wrap gallery-wrap">
           <div class="section-head reveal-on-scroll">
             <h2>Momentos para recordar</h2>
-            <p>Toca cada tarjeta para ver más</p>
+            <p id="gallery-subhead">Ocho instantes inolvidables ✨</p>
           </div>
-          <p class="gallery-hint">Toca cada tarjeta para descubrir un mensaje especial.</p>
+
+          <!-- Banner interactivo de progreso y modo nostalgia -->
+          <div class="gallery-memory-header" id="gallery-memory-header" aria-live="polite">
+            <div class="gallery-progress-badge" id="gallery-progress-badge">
+              <span class="gallery-progress-icon">✨</span>
+              <span class="gallery-progress-text" id="gallery-progress-text">Voltea las 8 tarjetas para descubrir una sorpresa (0/8)</span>
+            </div>
+            <div class="memory-reel-banner" id="memory-reel-banner" aria-hidden="true">
+              <span class="memory-reel-pill" id="memory-reel-pill">Capítulo de recuerdos</span>
+              <h3 class="memory-reel-title" id="memory-reel-title">Reviviendo nuestros momentos…</h3>
+              <p class="memory-reel-subtitle" id="memory-reel-subtitle">Un viaje por todo lo que hemos compartido</p>
+            </div>
+          </div>
+
           <div class="gallery-grid" id="gallery-grid">
             <!-- Las tarjetas se generan dinámicamente desde js/config.js y js/gallery.js -->
           </div>
@@ -334,7 +355,7 @@
         <div class="wrap" style="display:flex; flex-direction:column; align-items:center;">
           <div class="section-head reveal-on-scroll">
             <h2>Pide un deseo</h2>
-            <p>Toca las velas, una por una, para apagarlas</p>
+            <p>Pide un deseo y apaga cada vela</p>
           </div>
 
           <div class="cake-scene reveal-on-scroll">
@@ -382,13 +403,23 @@
       <!-- 6. FOOTER -->
       <footer>
         <span class="footer-heart" aria-hidden="true">♡</span>
-        <p>Hecho con cariño para tu día especial</p>
+        <p>We are infinite</p>
         <span class="footer-sign">21.09</span>
       </footer>
 
     </div>
 
   </div>
+
+  <!-- Botón flotante de control de música (silenciar/activar) -->
+  <button type="button" class="music-toggle-btn" id="musicToggleBtn" aria-label="Silenciar música" title="Silenciar música">
+    <span class="music-icon-playing" aria-hidden="true">
+      <span class="music-bar bar-1"></span>
+      <span class="music-bar bar-2"></span>
+      <span class="music-bar bar-3"></span>
+    </span>
+    <span class="music-icon-muted" aria-hidden="true">🔇</span>
+  </button>
 
   <!-- ============================================================
        SCRIPTS MODULARIZADOS
@@ -407,6 +438,10 @@
   <script defer src="js/gallery.js"></script>
   <!-- Pastel, soplado de velas y confeti -->
   <script defer src="js/cake.js"></script>
+  <!-- Sistema de música contextual por secciones y transiciones -->
+  <script defer src="js/music.js"></script>
+  <!-- Efectos de transición sorpresa y confeti exclusivo del Hero -->
+  <script defer src="js/hero-surprise.js"></script>
   <!-- Inicialización y orquestación general -->
   <script defer src="js/main.js"></script>
   <!-- Stickers interactivos y audio -->

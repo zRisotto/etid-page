@@ -128,6 +128,9 @@ document.addEventListener('DOMContentLoaded', () => {
   initSideFlanks();
   initZoneTransitions();
   initScrollFadeIn();
+  if (typeof initMusicController === 'function') {
+    initMusicController();
+  }
 
   // Iniciar pantalla de carga; al finalizar se activan partículas de fondo y corazones
   initLoader(() => {

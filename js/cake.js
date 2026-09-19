@@ -143,7 +143,13 @@ function initCandles() {
     cakeScene.classList.add('is-celebrating');
     if (message) message.classList.add('show');
     burstConfetti();
-    playCelebrationFanfare();
+
+    // Reproducir tema de victoria de Final Fantasy VII
+    if (window.MusicController && typeof window.MusicController.playVictoryTheme === 'function') {
+      window.MusicController.playVictoryTheme();
+    } else {
+      playCelebrationFanfare();
+    }
   }
 
   candles.forEach((candle, idx) => {

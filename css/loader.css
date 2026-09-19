@@ -56,11 +56,23 @@
 
 .loading-number.ready {
   cursor: pointer;
+  animation: loadingNumberAura 2.4s ease-in-out infinite;
 }
 
 .loading-number.ready:hover {
-  transform: scale(1.08);
-  text-shadow: 0 0 40px rgba(var(--pink-rgb), .9), 0 0 70px rgba(var(--gold-rgb), .6);
+  transform: scale(1.06);
+  text-shadow: 0 0 45px #FFC5D3, 0 0 75px rgba(255, 197, 211, 0.85);
+}
+
+@keyframes loadingNumberAura {
+  0%, 100% {
+    text-shadow: 0 0 25px rgba(255, 197, 211, 0.7), 0 0 50px rgba(255, 197, 211, 0.4);
+    transform: scale(1);
+  }
+  50% {
+    text-shadow: 0 0 42px #FFC5D3, 0 0 70px rgba(255, 197, 211, 0.85);
+    transform: scale(1.03);
+  }
 }
 
 @keyframes numberPulse {
@@ -108,47 +120,141 @@
   outline-offset: 2px;
 }
 
-/* Botón principal interactivo al alcanzar 21 */
+/* Botón interactivo sutil con brillo (Glow) al alcanzar 21 */
 .enter-btn {
   display: none;
-  margin-top: 1.2rem;
-  background: linear-gradient(100deg, var(--blue), var(--pink));
-  border: none;
-  color: #fff;
-  font-family: var(--font-body);
-  font-weight: 600;
-  font-size: 1.05rem;
-  padding: .85rem 1.9rem;
-  border-radius: 999px;
+  position: relative;
+  margin-top: 1rem;
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(255, 197, 211, 0.95), rgba(255, 197, 211, 0.85));
+  border: 1.5px solid rgba(255, 255, 255, 0.95);
+  color: #2b1f33;
   cursor: pointer;
-  box-shadow: 0 10px 30px rgba(var(--pink-rgb), .55);
-  transition: transform .25s var(--ease), box-shadow .25s var(--ease), opacity .4s ease;
-  animation: enterBtnPulse 2.2s infinite ease-in-out;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 25px #FFC5D3, 0 0 50px rgba(255, 197, 211, 0.7);
+  transition: transform .3s var(--ease), box-shadow .3s var(--ease);
+  animation: enterIconGlowPulse 2.4s infinite ease-in-out;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .enter-btn.show {
   display: inline-flex;
+}
+
+.enter-btn .enter-icon {
+  font-size: 1.5rem;
+  line-height: 1;
+  display: flex;
   align-items: center;
-  gap: .5rem;
+  justify-content: center;
+  transform: translateY(-1px);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.15));
+  transition: transform .3s var(--ease);
+}
+
+.enter-btn-glow {
+  position: absolute;
+  inset: -6px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 197, 211, 0.75) 0%, rgba(255, 197, 211, 0) 70%);
+  animation: enterGlowRing 2.4s infinite ease-in-out;
+  pointer-events: none;
 }
 
 .enter-btn:hover {
-  transform: translateY(-2px) scale(1.04);
-  box-shadow: 0 15px 35px rgba(var(--pink-rgb), .75);
+  transform: translateY(-2px) scale(1.1);
+  box-shadow: 0 0 35px #FFC5D3, 0 0 65px rgba(255, 197, 211, 0.9);
+}
+
+.enter-btn:hover .enter-icon {
+  transform: translateY(-1px) scale(1.15) rotate(8deg);
 }
 
 .enter-btn:focus-visible {
   outline: 2px solid #fff;
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
-@keyframes enterBtnPulse {
+@keyframes enterIconGlowPulse {
   0%, 100% {
     transform: scale(1);
-    box-shadow: 0 8px 24px rgba(var(--pink-rgb), .45);
+    box-shadow: 0 0 20px #FFC5D3, 0 0 45px rgba(255, 197, 211, 0.6);
   }
   50% {
-    transform: scale(1.04);
-    box-shadow: 0 14px 34px rgba(var(--pink-rgb), .75), 0 0 15px rgba(var(--gold-rgb), .4);
+    transform: scale(1.08);
+    box-shadow: 0 0 35px #FFC5D3, 0 0 65px rgba(255, 197, 211, 0.85);
+  }
+}
+
+@keyframes enterGlowRing {
+  0%, 100% {
+    transform: scale(0.9);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.35);
+    opacity: 0.9;
+  }
+}
+
+/* ============================================================
+   EFECTOS DE TRANSICIÓN SORPRESA (ONDA EXPANSIVA & FLASH)
+   ============================================================ */
+.loader-flash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.95) 0%, rgba(255, 197, 211, 0.65) 45%, rgba(150, 198, 224, 0.45) 75%, transparent 100%);
+  z-index: 10002;
+  pointer-events: none;
+  animation: loaderFlashAnim .85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.loader-shockwave {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 80px;
+  height: 80px;
+  margin-top: -40px;
+  margin-left: -40px;
+  border-radius: 50%;
+  border: 4px solid rgba(255, 197, 211, 0.95);
+  box-shadow: 0 0 45px rgba(150, 198, 224, 0.85), inset 0 0 30px rgba(255, 197, 211, 0.65);
+  z-index: 10003;
+  pointer-events: none;
+  animation: loaderShockwaveAnim 1s cubic-bezier(0.1, 0.8, 0.25, 1) forwards;
+}
+
+@keyframes loaderFlashAnim {
+  0% {
+    opacity: 0;
+    transform: scale(0.7);
+  }
+  25% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1.35);
+  }
+}
+
+@keyframes loaderShockwaveAnim {
+  0% {
+    transform: scale(0.2);
+    opacity: 1;
+    border-width: 6px;
+  }
+  60% {
+    opacity: 0.85;
+  }
+  100% {
+    transform: scale(26);
+    opacity: 0;
+    border-width: 1px;
   }
 }

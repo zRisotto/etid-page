@@ -19,14 +19,14 @@ function initEnvelope() {
     if (scene.classList.contains('open')) return;
     scene.classList.add('open');
     envelope.setAttribute('aria-expanded', 'true');
-    if (hint) hint.textContent = 'Toca la ✕ para cerrar';
+    if (hint) hint.textContent = '✕ Cerrar carta';
   }
 
   function closeLetter() {
     if (!scene.classList.contains('open')) return;
     scene.classList.remove('open');
     envelope.setAttribute('aria-expanded', 'false');
-    if (hint) hint.textContent = 'Toca el sobre para abrirlo';
+    if (hint) hint.textContent = 'Abre el sobre';
     envelope.focus();
   }
 

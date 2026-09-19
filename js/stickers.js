@@ -267,7 +267,7 @@
     // Actualizar imagen y atributos de accesibilidad
     img.src = nextItem.src;
     img.alt = nextItem.name;
-    btn.setAttribute('aria-label', `Nombre: ${nextItem.name}. Toca para cambiar nombre`);
+    btn.setAttribute('aria-label', `Nombre: ${nextItem.name}`);
 
     playPopChirp();
     spawnNameSparkles(btn);

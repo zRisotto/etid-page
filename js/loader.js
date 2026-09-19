@@ -9,10 +9,11 @@
 
 function initMatrixRain() {
   const canvas = document.getElementById('matrix-canvas');
-  if (!canvas) return { stop: () => {} };
+  if (!canvas) return { stop: () => {}, spawnBurst: () => {} };
 
   const ctx = canvas.getContext('2d');
   let w, h, fontSize, columns, drops;
+  const bursts = [];
 
   function resize() {
     w = canvas.width = window.innerWidth;
@@ -26,6 +27,22 @@ function initMatrixRain() {
 
   const glyph = '♥';
   let rafId;
+
+  function spawnBurst(cx, cy) {
+    const count = 12;
+    for (let i = 0; i < count; i++) {
+      const angle = (Math.PI * 2 * i) / count + (Math.random() - 0.5) * 0.4;
+      const speed = 1.4 + Math.random() * 2.2;
+      bursts.push({
+        x: cx,
+        y: cy,
+        vx: Math.cos(angle) * speed,
+        vy: Math.sin(angle) * speed - 1.2,
+        alpha: 1,
+        size: 13 + Math.random() * 8
+      });
+    }
+  }
 
   function draw() {
     ctx.fillStyle = 'rgba(18, 14, 26, 0.16)';
@@ -48,6 +65,27 @@ function initMatrixRain() {
       }
       drops[i] += 0.9;
     }
+
+    // Dibujar y actualizar destellos interactivos al tocar la pantalla
+    for (let j = bursts.length - 1; j >= 0; j--) {
+      const b = bursts[j];
+      ctx.save();
+      ctx.fillStyle = `rgba(255, 197, 211, ${b.alpha})`;
+      ctx.shadowColor = '#FFC5D3';
+      ctx.shadowBlur = 12;
+      ctx.font = `${b.size}px monospace`;
+      ctx.fillText('♥', b.x, b.y);
+      ctx.restore();
+
+      b.x += b.vx;
+      b.y += b.vy;
+      b.vy += 0.05;
+      b.alpha -= 0.024;
+      if (b.alpha <= 0) {
+        bursts.splice(j, 1);
+      }
+    }
+
     rafId = requestAnimationFrame(draw);
   }
   draw();
@@ -56,7 +94,8 @@ function initMatrixRain() {
     stop: () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('resize', resize);
-    }
+    },
+    spawnBurst
   };
 }
 
@@ -98,6 +137,11 @@ function initLoader(onLoaded) {
 
   if (!loadingScreen) return;
 
+  // Iniciar canción ambiental de carga (Pastel Ghost en loop)
+  if (window.MusicController && typeof window.MusicController.playLoaderMusic === 'function') {
+    window.MusicController.playLoaderMusic();
+  }
+
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   const rain = initMatrixRain();
   let finished = false;
@@ -108,6 +152,16 @@ function initLoader(onLoaded) {
     rain.stop();
     loadingScreen.classList.add('wipe');
     document.body.classList.remove('locked');
+
+    // Transición suave de audio hacia NewJeans (Sección 1: Hero)
+    if (window.MusicController && typeof window.MusicController.transitionFromLoader === 'function') {
+      window.MusicController.transitionFromLoader();
+    }
+
+    // Disparar transición y efectos sorpresa (confeti azul y rosa, onda expansiva, pop festivo)
+    if (window.HeroSurprise && typeof window.HeroSurprise.triggerSurpriseTransition === 'function') {
+      window.HeroSurprise.triggerSurpriseTransition();
+    }
 
     const site = document.getElementById('site');
     if (site) site.classList.add('revealed');
@@ -121,17 +175,37 @@ function initLoader(onLoaded) {
     }, prefersReducedMotion ? 50 : 950);
   }
 
+  // Interacción en la pantalla de carga: al tocar la lluvia matrix,
+  // se activa la música de Pastel Ghost y se crea un destello de corazones #FFC5D3,
+  // permitiendo disfrutar de la lluvia matrix en loop sin cerrarla prematuramente.
+  loadingScreen.addEventListener('pointerdown', (e) => {
+    if (finished) return;
+    const isEntering = e.target && (
+      e.target.closest('#enter-btn') ||
+      e.target.closest('#skip-btn') ||
+      (numberEl && numberEl.classList.contains('ready') && e.target.closest('#loading-number'))
+    );
+    if (isEntering) return;
+
+    if (window.MusicController && typeof window.MusicController.playLoaderMusic === 'function') {
+      window.MusicController.playLoaderMusic();
+    }
+    if (rain && typeof rain.spawnBurst === 'function') {
+      rain.spawnBurst(e.clientX, e.clientY);
+    }
+  });
+
   // Al llegar a 21, se queda estático y habilita las opciones para avanzar
   animateCounter(() => {
     if (labelEl) {
-      labelEl.textContent = '¡Toca aquí para entrar a tu sorpresa! ✨';
+      labelEl.textContent = 'Para ti con todo mi amor ✨';
     }
 
     if (numberEl) {
       numberEl.classList.add('ready');
       numberEl.setAttribute('role', 'button');
       numberEl.setAttribute('tabindex', '0');
-      numberEl.setAttribute('aria-label', 'Toca el número 21 para entrar a la página');
+      numberEl.setAttribute('aria-label', 'Entrar a la sorpresa de cumpleaños');
       numberEl.addEventListener('click', finishLoading);
       numberEl.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -149,13 +223,6 @@ function initLoader(onLoaded) {
     if (skipBtn) {
       skipBtn.style.display = 'none';
     }
-
-    // Permitir clic en cualquier parte de la pantalla de carga para entrar cómodamente
-    loadingScreen.style.cursor = 'pointer';
-    loadingScreen.addEventListener('click', (e) => {
-      // Evitar doble disparo si se clickea un botón interno
-      finishLoading();
-    });
   });
 
   // Botón de saltar antes de que termine el conteo si el usuario lo desea
