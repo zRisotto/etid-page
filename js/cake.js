@@ -237,7 +237,8 @@ function initCandles() {
 
     const colors = ['#FFC5D3', '#96C6E0', '#F0B860', '#D4A5E8', '#ffffff', '#ff6b8b', '#38bdf8', '#fbbf24'];
     const glyphs = ['★', '✦', '✧', '♥', '✨'];
-    const count = Math.round(55 * multiplier);
+    // Reducido de 55 a 20-30 para aligerar la carga del procesador
+    const count = Math.round((window.innerWidth < 768 ? 20 : 30) * multiplier);
 
     for (let i = 0; i < count; i++) {
       const piece = document.createElement('span');

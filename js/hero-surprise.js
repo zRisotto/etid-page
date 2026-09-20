@@ -232,7 +232,8 @@
   // ============================================================
   function spawnDOMBurstConfetti(w, h) {
     const symbols = ['♥', '✦', '✨', '🌸', '♡', '✧'];
-    const count = 48;
+    // Reducido de 48 a 20 para aliviar el procesamiento del DOM
+    const count = window.innerWidth < 768 ? 16 : 24;
     const container = document.body;
 
     for (let i = 0; i < count; i++) {
@@ -308,7 +309,8 @@
     burstParticles = [];
 
     function addWave(powerMultiplier = 1.0) {
-      const countLeft = Math.round(50 * powerMultiplier);
+      // Reducido de 50 a 25 para evitar lag en Canvas
+      const countLeft = Math.round(25 * powerMultiplier);
       for (let i = 0; i < countLeft; i++) {
         const angle = -Math.PI / 4 + (Math.random() - 0.5) * 0.65;
         const speed = (22 + Math.random() * 24) * powerMultiplier;
@@ -323,7 +325,8 @@
         );
       }
 
-      const countRight = Math.round(50 * powerMultiplier);
+      // Reducido de 50 a 25
+      const countRight = Math.round(25 * powerMultiplier);
       for (let i = 0; i < countRight; i++) {
         const angle = (-3 * Math.PI) / 4 + (Math.random() - 0.5) * 0.65;
         const speed = (22 + Math.random() * 24) * powerMultiplier;
@@ -338,7 +341,8 @@
         );
       }
 
-      const countCenter = Math.round(40 * powerMultiplier);
+      // Reducido de 40 a 20
+      const countCenter = Math.round(20 * powerMultiplier);
       for (let i = 0; i < countCenter; i++) {
         const angle = Math.random() * Math.PI * 2;
         const speed = (10 + Math.random() * 18) * powerMultiplier;

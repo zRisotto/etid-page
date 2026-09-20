@@ -84,7 +84,11 @@ function initParticles() {
   function init() {
     particles = [];
     const isMobile = window.innerWidth < 768;
-    const count = prefersReducedMotion ? 0 : Math.floor((W * H) / (isMobile ? 20000 : 10000));
+    const baseCount = Math.floor((W * H) / (isMobile ? 25000 : 18000));
+    // Limit max particles to keep O(n^2) distance calculations extremely fast
+    const maxParticles = isMobile ? 35 : 70;
+    const count = prefersReducedMotion ? 0 : Math.min(baseCount, maxParticles);
+    
     for (let i = 0; i < count; i++) {
       particles.push(new Particle());
     }
