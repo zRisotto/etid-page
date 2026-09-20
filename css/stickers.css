@@ -39,7 +39,8 @@
 }
 
 .sticker-margin--right {
-  right: 6px;
+  right: 0;
+  padding-right: 0;
 }
 
 /* 3. Items / Stickers individuales */
@@ -175,28 +176,28 @@
 /* 1. Gyro (Arriba derecha) */
 .sticker-margin--right .sticker-item:nth-child(1) {
   align-self: flex-end;
-  --tx: 6px;
+  --tx: 10px;
   --rot: 7deg;
 }
 
 /* 2. Ash */
 .sticker-margin--right .sticker-item:nth-child(2) {
-  align-self: flex-start;
-  --tx: -10px;
+  align-self: flex-end;
+  --tx: -4px;
   --rot: -8deg;
 }
 
 /* 3. Bruno */
 .sticker-margin--right .sticker-item:nth-child(3) {
   align-self: flex-end;
-  --tx: 8px;
+  --tx: 12px;
   --rot: 7deg;
 }
 
 /* 4. Clark */
 .sticker-margin--right .sticker-item:nth-child(4) {
-  align-self: center;
-  --tx: -8px;
+  align-self: flex-end;
+  --tx: -2px;
   --rot: -5deg;
 }
 
@@ -259,10 +260,51 @@
   animation: stickerPopU 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
+/* Ajuste de escala específico para Pim con gorro para que mantenga su proporción */
+.sticker-item[data-sound="pim-gorro"].is-clicked .sticker-img,
+.sticker-item.is-clicked .sticker-img--pim {
+  animation: stickerPopPim 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+@keyframes stickerPopPim {
+  0%   { transform: scale(1.65); }
+  45%  { transform: scale(2.15); }
+  100% { transform: scale(1.8); }
+}
+
 @keyframes stickerPopU {
   0%   { transform: scale(0.93); }
   45%  { transform: scale(1.2); }
   100% { transform: scale(1.14); }
+}
+
+/* Partículas de notas musicales y chispas al hacer clic en un sticker */
+.sticker-note {
+  position: absolute;
+  pointer-events: none;
+  font-size: 1.35rem;
+  font-weight: 700;
+  line-height: 1;
+  z-index: 100;
+  user-select: none;
+  animation: stickerNoteFloat 0.75s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+  will-change: transform, opacity;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+@keyframes stickerNoteFloat {
+  0% {
+    transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.95;
+    transform: translate(calc(-50% + var(--nx)), calc(-50% + var(--ny) * 0.55)) scale(1.28) rotate(var(--nr));
+  }
+  100% {
+    transform: translate(calc(-50% + var(--nx) * 1.35), calc(-50% + var(--ny))) scale(0.9) rotate(calc(var(--nr) * 1.6));
+    opacity: 0;
+  }
 }
 
 /* ============================================================

@@ -700,6 +700,7 @@
   window.HeroSurprise = {
     triggerSurpriseTransition,
     initAmbientHeroEffects,
-    spawnHeroTapParticles
+    spawnHeroTapParticles,
+    startGrandConfettiBurst
   };
 })();

@@ -63,6 +63,9 @@ function initEnvelope() {
 
   // Inicializar el pastel interactivo del collage de la carta
   initCollageCake();
+
+  // Inicializar el disco interactivo de Persona 3
+  initPersonaDisk();
 }
 
 /**
@@ -198,3 +201,104 @@ function initCollageCake() {
     }
   });
 }
+
+/**
+ * ============================================================
+ * INTERACTIVIDAD DEL DISCO PERSONA 3 (persona 3disk.png)
+ * ============================================================
+ * Al hacer clic:
+ * - Alterna / cambia la canción de la sección de la carta a "Color Your Night.mp3"
+ * - Activa rotación de vinilo con resplandor azul Persona 3 (.is-playing)
+ * - Muestra un mensaje flotante elegante informando de la pista
+ * - Emite partículas musicales (notas y estrellas azules)
+ */
+function initPersonaDisk() {
+  const diskBtn = document.getElementById('personaDiskBtn');
+  if (!diskBtn) return;
+
+  const COLOR_YOUR_NIGHT = 'assets/Songs/Color Your Night.mp3';
+
+  function spawnMusicParticles() {
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) return;
+
+    const glyphs = ['♪', '♫', '♬', '✨', '💙', '⭐'];
+    const colors = ['#38bdf8', '#60a5fa', '#93c5fd', '#ffffff', '#FFC5D3'];
+    const total = 14;
+
+    for (let i = 0; i < total; i++) {
+      const p = document.createElement('span');
+      p.className = 'disk-music-particle';
+
+      const angle = (Math.PI * 2 * i) / total + (Math.random() * 0.4 - 0.2);
+      const distance = 45 + Math.random() * 65;
+      const tx = Math.cos(angle) * distance + 'px';
+      const ty = Math.sin(angle) * distance - 25 + 'px';
+      const tr = (Math.random() * 180 - 90) + 'deg';
+
+      p.style.setProperty('--tx', tx);
+      p.style.setProperty('--ty', ty);
+      p.style.setProperty('--tr', tr);
+      p.style.left = '50%';
+      p.style.top = '50%';
+      p.style.color = colors[i % colors.length];
+      p.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+
+      diskBtn.appendChild(p);
+
+      setTimeout(() => {
+        if (p.parentNode) p.parentNode.removeChild(p);
+      }, 1250);
+    }
+  }
+
+  function showDiskToast(message) {
+    const existing = diskBtn.querySelector('.disk-toast-message');
+    if (existing) existing.remove();
+
+    const toast = document.createElement('div');
+    toast.className = 'disk-toast-message';
+    toast.textContent = message;
+    diskBtn.appendChild(toast);
+
+    setTimeout(() => {
+      if (toast.parentNode) toast.parentNode.removeChild(toast);
+    }, 2000);
+  }
+
+  function handleDiskClick(e) {
+    if (e) e.stopPropagation();
+
+    // Animación táctil de pulsación
+    diskBtn.classList.remove('is-pressed');
+    void diskBtn.offsetWidth;
+    diskBtn.classList.add('is-pressed');
+
+    if (window.MusicController && typeof window.MusicController.toggleSectionTrack === 'function') {
+      const isNowColorYourNight = window.MusicController.toggleSectionTrack('letter', COLOR_YOUR_NIGHT);
+
+      if (isNowColorYourNight) {
+        diskBtn.classList.add('is-playing');
+        showDiskToast('🎵 Color Your Night — Persona 3');
+      } else {
+        diskBtn.classList.remove('is-playing');
+        showDiskToast('🎵 Deftones — Entombed');
+      }
+    } else if (window.MusicController && typeof window.MusicController.changeSectionTrack === 'function') {
+      window.MusicController.changeSectionTrack('letter', COLOR_YOUR_NIGHT, true);
+      diskBtn.classList.add('is-playing');
+      showDiskToast('🎵 Color Your Night — Persona 3');
+    }
+
+    spawnMusicParticles();
+  }
+
+  diskBtn.addEventListener('click', handleDiskClick);
+  diskBtn.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      handleDiskClick(e);
+    }
+  });
+}
+

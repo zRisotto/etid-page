@@ -69,14 +69,14 @@ function initGallery() {
   };
 
   const defaultCaptions = [
-    'Una sonrisa que ilumina cualquier día',
-    'Un recuerdo que vale la pena guardar para siempre',
-    'Momentos inolvidables que se quedan en el corazón',
-    'Esa risa tuya tan única y contagiosa',
-    'Un día cualquiera hecho completamente especial a tu lado',
-    'Celebrando este año contigo, ¡y por muchos más!',
-    'Tus abrazos sinceros que reconfortan el alma',
-    'Cada plática contigo donde las horas se pasan volando'
+    'Nuestro primer año nuevo juntos',
+    'El día que empezó todo, en el que te confesé mi amor, junto a nuestro gusanito',
+    'Nuestra Ophelia',
+    'Cuando fuimos a ver bugonia, amo ir al cine VIP contigo',
+    'Nuestras desveladas en roblox',
+    'Pasearnos en el mall juntos siempre es muy bello',
+    'Cuando paseamos a nuestro gusano chiflado',
+    'Nuestro primer año de muchos juntos'
   ];
 
   const galleryItems = Array.isArray(config.gallery) && config.gallery.length === 8
@@ -165,7 +165,7 @@ function initGallery() {
     card.style.setProperty('--card-index', i);
 
     const mainSrc = encodeURI(albums.main[i] || '');
-    const caption = galleryItems[i]?.caption || defaultCaptions[i];
+    const caption = /*galleryItems[i]?.caption || */defaultCaptions[i];
 
     card.innerHTML = `
       <div class="card-inner">
@@ -280,9 +280,9 @@ function initGallery() {
     const steps = [
       {
         key: 'roblox',
-        pill: '1/4 • Nuestras tardes de juego',
+        pill: '1/4 • Nuestras desveladas de juego',
         title: '🎮 Nuestras risas en Roblox',
-        subtitle: 'Partidas, mundos compartidos y horas de pura diversión',
+        subtitle: 'Asi nos conocimos de nuestros recuerdos mas bonitos y chistosos',
         album: albums.roblox
       },
       {
@@ -294,14 +294,14 @@ function initGallery() {
       },
       {
         key: 'gus',
-        pill: '3/4 • Nuestro consentido',
-        title: '🐾 El inolvidable Gus',
-        subtitle: 'Compañero fiel de nuestros mejores días juntos',
+        pill: '3/4 • Nuestro gusanito',
+        title: '🐾 Nuestro bello gusanito',
+        subtitle: 'Siempre con nosotros',
         album: albums.gus
       },
       {
         key: 'beso',
-        pill: '4/4 • Amor y ternura',
+        pill: '4/4 • Nuestros besitos',
         title: '💋 Abrazos y besos que guardo siempre',
         subtitle: 'Todo el cariño más puro que siento por ti',
         album: albums.beso

@@ -24,7 +24,7 @@
 
   /* Tipografías */
   --font-display: 'Fraunces', Georgia, serif;
-  --font-body: 'Manrope', system-ui, sans-serif;
+  --font-body: 'Manrope', 'Noto Color Emoji', 'Segoe UI Emoji', 'Apple Color Emoji', system-ui, sans-serif;
 
   /* Curva de animación suave */
   --ease: cubic-bezier(.22, .61, .36, 1);
@@ -49,7 +49,6 @@ body {
   color: var(--ink);
   background: var(--bg-light);
   -webkit-font-smoothing: antialiased;
-  overflow-x: hidden;
 }
 
 body.locked {

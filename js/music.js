@@ -22,6 +22,8 @@
     wish: null // Sin música de fondo para la sección de velas
   };
 
+  const ORIGINAL_TRACKS = { ...TRACKS };
+
   const SFX_VICTORY = 'assets/SFX/FF VII victory theme.mp3';
   const TARGET_VOLUME = 0.72;
   const FADE_DURATION = 1800; // 1.8 segundos de crossfade suave
@@ -317,13 +319,75 @@
     }
   }
 
+  /**
+   * Cambia la pista asignada a una sección y la reproduce de inmediato
+   */
+  function changeSectionTrack(sectionKey, newTrackPath, playImmediately = true) {
+    if (!sectionKey || !newTrackPath) return;
+
+    const prevAudio = audioElements[sectionKey];
+    if (prevAudio) {
+      if (activeFades.has(prevAudio)) {
+        clearInterval(activeFades.get(prevAudio));
+        activeFades.delete(prevAudio);
+      }
+      if (!prevAudio.paused) {
+        fadeAudio(prevAudio, prevAudio.volume, 0, 700, () => {
+          prevAudio.pause();
+          prevAudio.currentTime = 0;
+        });
+      }
+    }
+
+    // Actualizar la ruta del track para esa sección
+    TRACKS[sectionKey] = newTrackPath;
+
+    // Crear la nueva instancia de Audio
+    const newAudio = new Audio(encodeURI(newTrackPath));
+    newAudio.loop = true;
+    newAudio.preload = 'auto';
+    newAudio.volume = 0;
+    newAudio.load();
+    audioElements[sectionKey] = newAudio;
+
+    // Si esa sección es la actual o se solicita reproducir de inmediato
+    if (playImmediately || currentTrackKey === sectionKey) {
+      currentTrackKey = sectionKey;
+      isSiteActive = true;
+      newAudio.play().then(() => {
+        fadeAudio(newAudio, 0, TARGET_VOLUME, 900);
+      }).catch(err => {
+        console.warn('[MusicController] Reproducción iniciada:', err);
+      });
+      updateToggleBtnUI();
+    }
+  }
+
+  /**
+   * Alterna entre la canción original y una pista alternativa para una sección
+   */
+  function toggleSectionTrack(sectionKey, alternateTrackPath) {
+    if (!sectionKey || !alternateTrackPath) return false;
+    const isAlreadyAlternate = TRACKS[sectionKey] === alternateTrackPath;
+    const nextTrack = isAlreadyAlternate ? ORIGINAL_TRACKS[sectionKey] : alternateTrackPath;
+    changeSectionTrack(sectionKey, nextTrack, true);
+    return !isAlreadyAlternate; // true si ahora suena la pista alternativa
+  }
+
+  function getCurrentTrack(sectionKey) {
+    return TRACKS[sectionKey] || null;
+  }
+
   // Objeto público del controlador
   window.MusicController = {
     playLoaderMusic,
     transitionFromLoader,
     transitionToSection,
     playVictoryTheme,
-    toggleMute
+    toggleMute,
+    changeSectionTrack,
+    toggleSectionTrack,
+    getCurrentTrack
   };
 })();
 

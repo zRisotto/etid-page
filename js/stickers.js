@@ -8,78 +8,192 @@
 (function () {
   'use strict';
 
-  // Configuración de rutas
-  const SOUNDS_DIR = './sounds/';
-  const SUPPORTED_SOUNDS = [
-    'yakuza',
-    'tommy',
-    'pim-gorro',
-    'annie',
-    'jin',
-    'tifa',
+  // Configuración de rutas y mapeo de efectos de sonido (SFX) en assets/SFX/
+  const STICKER_SOUNDS = {
+    // Personajes con audios disponibles en assets/SFX/
+    'minion': 'assets/SFX/minion.mp3',
+    'pim-gorro': 'assets/SFX/yay pim.mp3',
+    'pim': 'assets/SFX/yay pim.mp3',
+    'yakuza': 'assets/SFX/yakuza.mp3',
+    'gyro': 'assets/SFX/gyro.mp3',
+    'bruno': 'assets/SFX/bruno.mp3',
+    'clark': 'assets/SFX/clark kent.mp3',
+    'clark-kent': 'assets/SFX/clark kent.mp3',
+    'hamudd': 'assets/SFX/hamud.mp3',
+    'hamud': 'assets/SFX/hamud.mp3',
+    'miku': 'assets/SFX/miku.mp3',
+
+    // Mapeo preventivo para el resto si se agregan archivos con su nombre
+    'tifa': 'assets/SFX/tifa.mp3',
+    'jin': 'assets/SFX/jin.mp3',
+    'annie': 'assets/SFX/annie.mp3',
+    'tommy': 'assets/SFX/tommy.mp3',
+    'ash': 'assets/SFX/ash.mp3',
+    'noctis': 'assets/SFX/noctis.mp3'
+  };
+
+  // Claves que cuentan con archivo de audio verificado en assets/SFX/
+  const ACTIVE_SFX_KEYS = new Set([
     'minion',
+    'pim-gorro',
+    'pim',
+    'yakuza',
     'gyro',
-    'ash',
     'bruno',
     'clark',
+    'clark-kent',
     'hamudd',
-    'noctis',
+    'hamud',
     'miku'
-  ];
+  ]);
+
+  // Calibración de volumen individual para que todos suenen armoniosos
+  const SOUND_VOLUMES = {
+    'minion': 0.95,
+    'pim-gorro': 0.9,
+    'pim': 0.9,
+    'yakuza': 0.92,
+    'gyro': 0.95,
+    'bruno': 0.95,
+    'clark': 0.88,
+    'clark-kent': 0.88,
+    'hamudd': 0.88,
+    'hamud': 0.88,
+    'miku': 0.88
+  };
+
+  function getSoundPath(soundName) {
+    if (!soundName) return null;
+    return STICKER_SOUNDS[soundName] || `assets/SFX/${soundName}.mp3`;
+  }
 
   // Caché de objetos Audio precargados
   const audioCache = new Map();
 
   /**
-   * Precarga todos los archivos de audio en segundo plano
+   * Precarga los archivos de audio existentes en segundo plano
    */
   function preloadAudioAssets() {
-    SUPPORTED_SOUNDS.forEach((soundName) => {
+    ACTIVE_SFX_KEYS.forEach((soundKey) => {
+      const soundPath = STICKER_SOUNDS[soundKey];
+      if (!soundPath) return;
       try {
-        const audio = new Audio(`${SOUNDS_DIR}${soundName}.mp3`);
+        const audio = new Audio(encodeURI(soundPath));
         audio.preload = 'auto';
-        audioCache.set(soundName, audio);
+        audioCache.set(soundKey, audio);
       } catch (err) {
-        console.warn(`[Audio] Error al instanciar audio para ${soundName}:`, err);
+        console.warn(`[Audio] Error al instanciar audio para ${soundKey}:`, err);
       }
     });
   }
 
   /**
+   * Genera un efecto sonoro sintetizado armónico para personajes que aún no tienen archivo MP3
+   */
+  function playFallbackSynthesizedSound(characterKey) {
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext;
+      if (!AudioCtx) return;
+      const ctx = new AudioCtx();
+      if (ctx.state === 'suspended') ctx.resume();
+
+      const charThemes = {
+        'tifa': [523.25, 659.25, 783.99],
+        'jin': [440, 554.37, 659.25],
+        'annie': [659.25, 880, 1046.50],
+        'tommy': [349.23, 440, 523.25],
+        'ash': [392, 587.33, 783.99],
+        'noctis': [440, 659.25, 880]
+      };
+
+      const notes = charThemes[characterKey] || [523.25, 659.25, 783.99];
+      const now = ctx.currentTime;
+      notes.forEach((freq, idx) => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = idx === 0 ? 'triangle' : 'sine';
+        osc.frequency.setValueAtTime(freq, now + idx * 0.065);
+
+        gain.gain.setValueAtTime(0.18, now + idx * 0.065);
+        gain.gain.exponentialRampToValueAtTime(0.0001, now + idx * 0.065 + 0.36);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(now + idx * 0.065);
+        osc.stop(now + idx * 0.065 + 0.38);
+      });
+    } catch (_) {}
+  }
+
+  /**
    * Reproduce el sonido correspondiente al personaje
-   * @param {string} soundName Nombre del archivo de audio (sin extensión)
+   * @param {string} soundName Nombre o clave del personaje
    */
   function playStickerSound(soundName) {
     if (!soundName) return;
 
     try {
-      let baseAudio = audioCache.get(soundName);
-      if (!baseAudio) {
-        baseAudio = new Audio(`${SOUNDS_DIR}${soundName}.mp3`);
-        audioCache.set(soundName, baseAudio);
-      }
+      if (ACTIVE_SFX_KEYS.has(soundName)) {
+        const soundPath = getSoundPath(soundName);
+        if (soundPath) {
+          const vol = SOUND_VOLUMES[soundName] || 0.9;
+          const soundInstance = new Audio(encodeURI(soundPath));
+          soundInstance.volume = vol;
 
-      // Clonamos el nodo para soportar pulsaciones consecutivas sin cortar el sonido anterior
-      const soundInstance = baseAudio.cloneNode();
-      soundInstance.volume = 0.85;
-
-      const playPromise = soundInstance.play();
-      if (playPromise !== undefined) {
-        playPromise.catch((err) => {
-          // El navegador puede bloquear el audio hasta la primera interacción o si el archivo no existe aún
-          console.info(
-            `[Audio Info] Nota: "${soundName}.mp3" aún no se encuentra en ${SOUNDS_DIR} o requiere interacción previa.`,
-            err.message
-          );
-        });
+          const playPromise = soundInstance.play();
+          if (playPromise !== undefined) {
+            playPromise.catch(() => {
+              playFallbackSynthesizedSound(soundName);
+            });
+          }
+          return;
+        }
       }
     } catch (err) {
-      console.warn(`[Audio Warning]`, err);
+      console.warn(`[Audio Warning] Error al reproducir audio de ${soundName}:`, err);
+    }
+
+    playFallbackSynthesizedSound(soundName);
+  }
+
+  /**
+   * Genera pequeñas notas musicales y chispas flotantes al pulsar un sticker
+   */
+  function spawnStickerNotes(stickerElement) {
+    if (!stickerElement) return;
+
+    const symbols = ['♪', '♫', '✦', '★', '✧'];
+    const colors = ['#ff6b8b', '#38bdf8', '#f59e0b', '#a855f7', '#ec4899', '#10b981'];
+    const count = 4;
+
+    for (let i = 0; i < count; i++) {
+      const note = document.createElement('span');
+      note.className = 'sticker-note';
+      note.textContent = symbols[i % symbols.length];
+      note.style.color = colors[Math.floor(Math.random() * colors.length)];
+
+      const angle = (Math.random() - 0.5) * 1.5 - Math.PI / 2;
+      const dist = 40 + Math.random() * 45;
+      const nx = `${Math.cos(angle) * dist}px`;
+      const ny = `${Math.sin(angle) * dist}px`;
+      const nr = `${(Math.random() - 0.5) * 60}deg`;
+
+      note.style.setProperty('--nx', nx);
+      note.style.setProperty('--ny', ny);
+      note.style.setProperty('--nr', nr);
+      note.style.left = '50%';
+      note.style.top = '50%';
+
+      stickerElement.appendChild(note);
+      setTimeout(() => {
+        if (note.parentNode) note.remove();
+      }, 760);
     }
   }
 
   /**
-   * Aplica feedback visual inmediato (rebote / escala 0.95)
+   * Aplica feedback visual inmediato (rebote / escala)
    * @param {HTMLElement} stickerElement El contenedor del sticker
    */
   function applyClickFeedback(stickerElement) {
@@ -92,7 +206,7 @@
 
     setTimeout(() => {
       stickerElement.classList.remove('is-clicked');
-    }, 320);
+    }, 350);
   }
 
   /**
@@ -100,8 +214,10 @@
    * @param {HTMLElement} sticker
    */
   function handleStickerActivation(sticker) {
+    if (!sticker) return;
     const soundName = sticker.getAttribute('data-sound');
     applyClickFeedback(sticker);
+    spawnStickerNotes(sticker);
     playStickerSound(soundName);
   }
 
